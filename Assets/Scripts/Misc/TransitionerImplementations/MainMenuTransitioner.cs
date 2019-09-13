@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PositionTransitioner : BaseTransitioner
+public class MainMenuTransitioner : BaseTransitioner
 {
     public override void InitializeTransitioner()
     {

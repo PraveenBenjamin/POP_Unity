@@ -69,12 +69,12 @@ namespace POP.Framework
 
         private void UpdateMainRoutine()
         {
-
+            GameManager.Instance.UpdateGameManager();
         }
 
         private void TerminateMainRoutine()
         {
-            TemporaryVariableManager.SetTemporaryVariable<GameManager>(this, _gameManagerGOIndex, null);
+            Destroy(GameManager.Instance.gameObject);
         }
 
 
@@ -87,9 +87,7 @@ namespace POP.Framework
             _appManagerFSM.SetState((AppStates)(_appManagerFSM.GetState() + 1));
         }
 
-
-
-        private void Update()
+        protected override void UpdateSingleton()
         {
             _appManagerFSM.UpdateStateMachine();
         }

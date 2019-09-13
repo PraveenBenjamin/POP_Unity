@@ -18,6 +18,8 @@ public abstract class SingletonBehaviour<T> : MonoBehaviour where T: class
     protected abstract void InitializeSingleton();
     protected abstract void OnDestroySingleton();
 
+    protected virtual void UpdateSingleton() { }
+
     private void Awake()
     {
         if (_instance != null)
@@ -28,6 +30,11 @@ public abstract class SingletonBehaviour<T> : MonoBehaviour where T: class
         }
         _instance = (T)System.Convert.ChangeType(this,typeof(T));
         InitializeSingleton();
+    }
+
+    private void Update()
+    {
+        UpdateSingleton();
     }
 
     ~SingletonBehaviour()

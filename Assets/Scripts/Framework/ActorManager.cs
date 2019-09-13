@@ -17,7 +17,7 @@ namespace POP.Framework
             _actorMap = new Dictionary<Type, Dictionary<string, BaseActor>>();
         }
 
-        public BaseActor CreateActor<T>(string uid) where T:BaseActor
+        public T CreateActor<T>(string uid) where T:BaseActor
         {
             Type toConsider = typeof(T);
             if (!_actorMap.ContainsKey(toConsider))
@@ -32,7 +32,7 @@ namespace POP.Framework
 
 
             GameObject newActorGO = new GameObject(uid);
-            BaseActor newActor = newActorGO.AddComponent<T>();
+            T newActor = newActorGO.AddComponent<T>();
             newActor.Initialize();
             dicToUse.Add(uid, newActor);
 

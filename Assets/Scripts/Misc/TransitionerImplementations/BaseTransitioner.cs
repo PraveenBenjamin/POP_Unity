@@ -12,7 +12,7 @@ public abstract class BaseTransitioner : MonoBehaviour
     {
         Linear,
         Cubic,
-        Spherical
+        Sin
     }
 
     public class TransitionDatum

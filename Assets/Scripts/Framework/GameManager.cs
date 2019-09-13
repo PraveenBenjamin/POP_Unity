@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using POP.UI.Menus;
+using POP.Modules.Gameplay;
 
 namespace POP.Framework
 {
@@ -10,7 +11,8 @@ namespace POP.Framework
 
         public enum GameStates
         {
-            MainMenu,
+            Init,
+            Pregame,
             InGame,
             GameOver
         }
@@ -22,21 +24,43 @@ namespace POP.Framework
         {
             _gmFSM = new FSM<GameStates>();
             _gmFSM.Initialize(Instance);
+
+
+            if (MenuManager.Instance == null)
+            {
+                GameObject mmGo = new GameObject("MenuManager");
+                mmGo.AddComponent<MenuManager>();
+            }
+
+            MenuManager.Instance.PushMenu<MainMenu>();
+
+            //idle until the menu manager triggers the ingame setstate call
+            SetGameState(GameStates.Pregame);
         }
 
-        private void InitMainMenu()
+        public void SetGameState(GameStates toSet)
         {
-
+            _gmFSM.SetState(toSet);
         }
 
-        private void UpdateMainMenu()
+        private void InitInGame()
         {
-
+            MenuManager.Instance.PushMenu<InGameMenu>(()=>
+            {
+                GameObject gpGo = new GameObject("GameplayHandler");
+                gpGo.AddComponent<GameplayScript>();
+            });
         }
 
-        private void TerminateMainMenu()
+        private void UpdateInGame()
         {
+            GameplayScript.Instance.UpdateGameplayScript();
+        }
 
+
+        public void UpdateGameManager()
+        {
+            _gmFSM.UpdateStateMachine();
         }
 
 

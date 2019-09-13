@@ -19,7 +19,9 @@ namespace POP.Framework
 
         protected FSM<BaseMenuStates> _baseMenuFSM;
 
+       
         protected BaseTransitioner _transitionerToUse;
+
         private int _onTransitionInCBIndex = 0;
         private int _onTransitionOutCBIndex = 1;
         private int _onConstructionCompleteCBIndex = 2;
@@ -36,6 +38,8 @@ namespace POP.Framework
 
         public void UpdateMenu()
         {
+            _baseMenuFSM.UpdateStateMachine();
+
             InputIndependantUpdateRoutine();
 
             if (!_inputEnabled)
@@ -94,6 +98,8 @@ namespace POP.Framework
             _baseMenuFSM = new FSM<BaseMenuStates>();
             _baseMenuFSM.Initialize(this);
 
+            if (_transitionerToUse == null)
+                _transitionerToUse = GetComponent<BaseTransitioner>();
             _transitionerToUse.InitializeTransitioner();
             ConstructionRoutineInternal();
         }

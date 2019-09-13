@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using POP.UI.MenuSystem;
 using UnityEngine.Events;
 
 namespace POP.Framework
@@ -9,10 +8,7 @@ namespace POP.Framework
     public class MenuManager : SingletonBehaviour<MenuManager>
     {
 
-        
-
         private Stack<BaseMenu> _menuStack;
-
 
         public T InstantiateMenuInstance<T>() where T : BaseMenu
         {
@@ -21,35 +17,41 @@ namespace POP.Framework
             return menuToAdd;
         }
 
-        public void PushMenu<T>() where T : BaseMenu
+        public void PushMenu<T>(UnityAction onComplete = null) where T : BaseMenu
         {
             BaseMenu men = InstantiateMenuInstance<T>();
             men.ConstructionRoutine();
             _menuStack.Push(men);
-            men.TransitionIn();
+            men.TransitionIn((BaseMenu menu) =>
+            {
+                OnMenuTransitionInComplete(menu);
+                onComplete?.Invoke();
+            }); 
         }
 
 
-        public void PopMenu()
+        public void PopMenu(UnityAction onComplete = null)
         {
             BaseMenu men = _menuStack.Peek();
-            men.TransitionOut((BaseMenu toDestroy) =>
+            men.TransitionOut((BaseMenu menu) =>
             {
-                toDestroy.DestructionRoutine();
-                _menuStack.Pop();
+                OnMenuTransitionOutComplete(menu);
+                onComplete?.Invoke();
             });
-           
+
         }
 
 
         private void OnMenuTransitionInComplete(BaseMenu menuHandle)
         {
-
+            // do i even need this?
+            
         }
 
         private void OnMenuTransitionOutComplete(BaseMenu menuHandle)
         {
-
+            menuHandle.DestructionRoutine();
+            _menuStack.Pop();
         }
 
 
@@ -80,6 +82,12 @@ namespace POP.Framework
                 _menuStack.Clear();
                 _menuStack = null;
             }
+        }
+
+        public void UpdateMenuManager()
+        {
+            if (_menuStack.Count > 0)
+                _menuStack.Peek().UpdateMenu();
         }
     }
 }
