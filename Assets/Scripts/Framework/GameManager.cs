@@ -32,6 +32,13 @@ namespace POP.Framework
                 mmGo.AddComponent<MenuManager>();
             }
 
+
+            if (ActorManager.Instance == null)
+            {
+                GameObject amGo = new GameObject("ActorManager");
+                amGo.AddComponent<ActorManager>();
+            }
+
             MenuManager.Instance.PushMenu<MainMenu>();
 
             //idle until the menu manager triggers the ingame setstate call
@@ -57,10 +64,22 @@ namespace POP.Framework
             GameplayScript.Instance.UpdateGameplayScript();
         }
 
+        private void TerminateInGame()
+        {
+            Destroy(GameplayScript.Instance.gameObject);
+            MenuManager.Instance.PushMenu<GameOverMenu>(() =>
+            {
+
+            });
+        }
+
 
         public void UpdateGameManager()
         {
             _gmFSM.UpdateStateMachine();
+
+            //we will be using the actor manager throughout the program
+            ActorManager.Instance.UpdateActorManager();
         }
 
 

@@ -2,11 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 using POP.Framework;
+using TMPro;
+using POP.Modules.Gameplay;
 
 namespace POP.UI.Menus
 {
     public class InGameMenu : BaseMenu
     {
+
+        TextMeshProUGUI _timerText;
+        public string TimerText
+        {
+            get
+            {
+                return _timerText.text;
+            }
+            set
+            {
+                _timerText.text = value;
+            }
+        }
+        TextMeshProUGUI _scoreText;
+        public string ScoreText
+        {
+            get
+            {
+                return _scoreText.text;
+            }
+            set
+            {
+                _scoreText.text = value;
+            }
+        }
+
+        public void OnPauseButtonClicked()
+        {
+            GameplayScript.Instance.Pause();
+            MenuManager.Instance.PushMenu<PauseMenu>();
+        }
+
         protected override void ConstructionRoutineInternal()
         {
             throw new System.NotImplementedException();
@@ -37,16 +71,5 @@ namespace POP.UI.Menus
             throw new System.NotImplementedException();
         }
 
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
     }
 }

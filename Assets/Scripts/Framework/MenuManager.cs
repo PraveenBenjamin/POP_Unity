@@ -41,6 +41,11 @@ namespace POP.Framework
 
         }
 
+        public T PeekMenu<T>() where T:BaseMenu
+        {
+            return (T)_menuStack.Peek();
+        }
+
 
         private void OnMenuTransitionInComplete(BaseMenu menuHandle)
         {

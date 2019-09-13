@@ -57,6 +57,15 @@ namespace POP.Framework
             return null;
         }
 
+        public int GetActorCount<T>()
+        {
+            Dictionary<string, BaseActor> dic = GetActorDictionary(typeof(T));
+            if(dic != null)
+                return dic.Count;
+
+            return -1;
+        }
+
 
         public void DestroyActor(ref BaseActor toRelease)
         {
@@ -69,6 +78,18 @@ namespace POP.Framework
 
             toRelease.DestructionRoutine();
         }
+
+        public void UpdateActorManager()
+        {
+            foreach (KeyValuePair<System.Type, Dictionary<string, BaseActor>> pairOuter in _actorMap)
+            {
+                foreach (KeyValuePair<string, BaseActor> pairInner in pairOuter.Value)
+                {
+                    pairInner.Value.UpdateActor();
+                }
+            }
+        }
+
 
         protected override void OnDestroySingleton()
         {

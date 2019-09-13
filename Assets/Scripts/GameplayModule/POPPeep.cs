@@ -1,33 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using POP.Framework;
 
 namespace POP.Modules.Gameplay
 {
     [RequireComponent(typeof(RectTransform))]
     public class PopPeep : BaseActor
     {
+        public enum PopPeepTypes
+        {
+            Red = 0,
+            Green,
+            Blue,
+            Black,
+            White
+        }
+
+        public enum PopPeepStates
+        {
+            Init,
+            Idle,
+            Shifty,
+            Worried,
+            Talkative,
+            Selected,
+            Matched,
+            NotMatched,
+            Destroyed
+        }
+
+        protected FSM<PopPeepStates> _ppFSM;
+
+
         public override void CreationRoutine()
         {
-            throw new System.NotImplementedException();
+            _ppFSM = new FSM<PopPeepStates>();
         }
 
         public override void DestructionRoutine()
         {
-            throw new System.NotImplementedException();
+            _ppFSM = null;
         }
 
-        // Start is called before the first frame update
-        void Start()
+
+        public void OnClicked()
         {
-
+            _ppFSM.SetState(PopPeepStates.Selected);
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void UpdateActor()
         {
-
+            _ppFSM.UpdateStateMachine();
         }
+
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace POP
+namespace POP.Framework
 {
 
     public static class Constants
@@ -13,5 +13,8 @@ namespace POP
         public const string FSMInitPrefix = "Init";
         public const string FSMUpdatePrefix = "Update";
         public const string FSMTerminatePrefix = "Terminate";
+
+
+        public const float globalAnimationSpeed = 2;
     }
 }

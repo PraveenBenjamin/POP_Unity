@@ -37,6 +37,10 @@ namespace POP.Framework
         {
             _appManagerFSM = new FSM<AppStates>();
             _appManagerFSM.Initialize(Instance);
+
+
+            //create universal singletons
+            
         }
 
         private void InitInitialization()

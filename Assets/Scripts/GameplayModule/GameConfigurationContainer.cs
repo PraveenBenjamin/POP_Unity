@@ -24,6 +24,12 @@ namespace POP.Modules.Gameplay
 
         public static DifficultyLevel Difficulty = DifficultyLevel.Easy;
 
+    
+        public const float GameCountdownDuration = 4;
+
+        [SerializeField]
+        private DifficultyLevelIntDict _gameTimerDictionary;
+
 
         public Image GetDrawArea(DifficultyLevel level)
         {
@@ -33,6 +39,11 @@ namespace POP.Modules.Gameplay
         public int GetGridSize(DifficultyLevel level)
         {
             return _gridSizeDictionary[level];
+        }
+
+        public int GetMaxGameTime(DifficultyLevel level)
+        {
+            return _gameTimerDictionary[level];
         }
 
         protected override void InitializeSingleton()

@@ -12,4 +12,14 @@ namespace POP.Framework
 
     [System.Serializable]
     public class DifficultyLevelIntDict : SerializableDictionaryBase<DifficultyLevel, int> { }
+
+    [System.Serializable]
+    public class PopPeepTypeColorDict : SerializableDictionaryBase<PopPeep.PopPeepTypes, Color> { }
+
+    [System.Serializable]
+    public class PopPeepTypeIntDict : SerializableDictionaryBase<PopPeep.PopPeepTypes, int> { }
+
+    [System.Serializable]
+    public class PopPeepTypeSliderDict : SerializableDictionaryBase<PopPeep.PopPeepTypes, Slider> { }
+
 }
