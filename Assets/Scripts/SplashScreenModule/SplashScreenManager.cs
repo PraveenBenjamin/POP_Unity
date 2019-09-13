@@ -165,7 +165,10 @@ namespace POP.Modules
 
         protected override void OnDestroySingleton()
         {
-            //dont really need this for now
+            // hey if you can manually release your own crap, why not right?
+            _ssFSM = null;
+            _imageHandle = null;
+
         }
     }
 

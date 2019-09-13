@@ -58,6 +58,23 @@ namespace POP.Framework
 
         private static void PerformMaintainence()
         {
+
+            foreach (KeyValuePair<UnityEngine.Object, Dictionary<int, object>> pairOuter in _temporaryVariables)
+            {
+
+                if (pairOuter.Key == null)
+                    continue;
+
+                var badKeysInner = pairOuter.Value.Where(pair => pair.Value == null)
+                        .Select(pair => pair.Key)
+                        .ToList();
+                foreach (var badKeyInner in badKeysInner)
+                {
+                    pairOuter.Value.Remove(badKeyInner);
+                }
+            }
+
+
             var badKeys = _temporaryVariables.Where(pair => pair.Key == null || pair.Value.Count == 0)
                         .Select(pair => pair.Key)
                         .ToList();
@@ -65,6 +82,7 @@ namespace POP.Framework
             {
                 _temporaryVariables.Remove(badKey);
             }
+
         }
     }
 

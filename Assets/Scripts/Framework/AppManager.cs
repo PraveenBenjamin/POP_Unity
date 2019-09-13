@@ -19,7 +19,8 @@ namespace POP.Framework
         [SerializeField]
         private SplashScreenManager _splashScreenPrefab;
 
-        private int _splashScreenGOIndex = 0;
+        [SerializeField]
+        private GameManager _gameManagerPrefab;
 
 
         public enum AppStates
@@ -46,24 +47,24 @@ namespace POP.Framework
 
         private void InitSplashScreen()
         {
-            SplashScreenManager ssObject = Instantiate(_splashScreenPrefab);
-            TemporaryVariableManager.SetTemporaryVariable(Instance, _splashScreenGOIndex, ssObject, true);
+           Instantiate(_splashScreenPrefab);
         }
 
         private void UpdateSplashScreen()
         {
-            TemporaryVariableManager.GetTemporaryVariable<SplashScreenManager>(this, _splashScreenGOIndex).UpdateSplashScreenManager();
+            SplashScreenManager.Instance?.UpdateSplashScreenManager();
         }
 
         private void TerminateSplashScreen()
         {
-            //_appManagerFSM.SetState(AppStates.MainRoutine);
+            if (SplashScreenManager.Instance != null)
+                Destroy(SplashScreenManager.Instance.gameObject);
         }
 
 
         private void InitMainRoutine()
         {
-
+            Instantiate(_gameManagerPrefab);
         }
 
         private void UpdateMainRoutine()
@@ -73,7 +74,7 @@ namespace POP.Framework
 
         private void TerminateMainRoutine()
         {
-
+            TemporaryVariableManager.SetTemporaryVariable<GameManager>(this, _gameManagerGOIndex, null);
         }
 
 
