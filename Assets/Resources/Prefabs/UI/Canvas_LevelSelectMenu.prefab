@@ -172,8 +172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c94136a912c4d4e40905b000072e1cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _leftButton: {fileID: 8977119282430768964}
-  _rightButton: {fileID: 3883169570136675796}
+  _leftButton: {fileID: 3883169570136675796}
+  _rightButton: {fileID: 8977119282430768964}
 --- !u!114 &4434878278986426124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,14 +195,14 @@ MonoBehaviour:
       startValue: 0.0,500.0,0.0
       endValue: 0.0,300.0,0.0
       lerpType: 1
-    - hierarchyOfTransform: Button_LowerDifficulty
+    - hierarchyOfTransform: Button_IncreaseDifficulty
       typeOfComponentToAffect: RectTransform
       nameOfPropertyToAffect: localPosition
       typeOfPropertyToAffect: UnityEngine.Vector3
       startValue: -1000.0,0.0,0.0
       endValue: -650.0,0.0,0.0
       lerpType: 1
-    - hierarchyOfTransform: Button_IncreaseDifficulty
+    - hierarchyOfTransform: Button_DecreaseDifficulty
       typeOfComponentToAffect: RectTransform
       nameOfPropertyToAffect: localPosition
       typeOfPropertyToAffect: UnityEngine.Vector3
@@ -498,8 +498,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3974584808747534363}
-        m_MethodName: OnDifficultyChanged
-        m_Mode: 3
+        m_MethodName: OnBackToMainMenu
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 3702310749063116366}
   - component: {fileID: 8977119282430768964}
   m_Layer: 5
-  m_Name: Button_LowerDifficulty
+  m_Name: Button_IncreaseDifficulty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -632,7 +632,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: -1
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1119,7 +1119,7 @@ GameObject:
   - component: {fileID: 751286005818169132}
   - component: {fileID: 3883169570136675796}
   m_Layer: 5
-  m_Name: Button_IncreaseDifficulty
+  m_Name: Button_DecreaseDifficulty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1228,7 +1228,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: -1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

@@ -32,6 +32,9 @@ namespace POP.Modules.Gameplay
 
         public const float GameCountdownDuration = 4;
 
+        public const float SplashScreenTransitionTime = 0.5f;
+
+        public const float SplashScreenHangTime = 0.5f;
 
 
         public Image GetDrawArea(DifficultyLevel level)

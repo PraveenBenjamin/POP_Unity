@@ -63,7 +63,7 @@ public class BaseTransitioner : MonoBehaviour
         {
             toPrint += allProperties[i].Name + " " + allProperties[i].PropertyType +"\n";
         }
-        Debug.Log(toPrint);
+        //Debug.Log(toPrint);
     }
 
     public string InitializeTransitions(float transitionTime)

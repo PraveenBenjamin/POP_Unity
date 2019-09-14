@@ -41,10 +41,19 @@ namespace POP.Framework
                 amGo.transform.SetParent(AppManager.Instance.transform, false);
             }
 
-            MenuManager.Instance.PushMenu<MainMenu>();
-
             //idle until the menu manager triggers the ingame setstate call
             SetGameState(GameStates.Pregame);
+
+
+            AudioManager.Instance.PlayLooping(AudioManager.AudioClipType.BackgroundMusic);
+        }
+
+        private void InitPregame()
+        {
+            CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.MainMenu, () =>
+             {
+                 MenuManager.Instance.PushMenu<MainMenu>();
+             }, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
         }
 
         public void SetGameState(GameStates toSet)
@@ -70,11 +79,16 @@ namespace POP.Framework
 
         private void TerminateInGame()
         {
-            Destroy(GameplayScript.Instance.gameObject);
-            MenuManager.Instance.PushMenu<GameOverMenu>(() =>
+            DestroyImmediate(GameplayScript.Instance.gameObject);
+            MenuManager.Instance.PopMenu(() =>
             {
-
+                CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.GameOver, () =>
+                 {
+                     MenuManager.Instance.PushMenu<GameOverMenu>();
+                 }, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
+                
             });
+            
         }
 
 

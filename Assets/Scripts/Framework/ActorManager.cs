@@ -83,6 +83,23 @@ namespace POP.Framework
             toRelease.DestructionRoutine();
         }
 
+        public void DestroyAllActorOfType<T>()
+        {
+
+            System.Type type = typeof(T);
+
+            Dictionary<string, BaseActor> dic = GetActorDictionary(type);
+            if (dic != null)
+            {
+                foreach (BaseActor act in dic.Values)
+                {
+                    toDestroy.Add(act);
+                    act.DestructionRoutine();
+                }
+                _isDirty = true;
+            }
+        }
+
         private void PerformMaintainence()
         {
             for (int i = 0; i < toDestroy.Count; ++i)

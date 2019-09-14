@@ -30,6 +30,8 @@ namespace POP.Modules.Gameplay
         private int _gameTimerIndex = 1;
         private int _scoreIndex = 2;
 
+        private float _gridInterval;
+
         private PopPeep _currentlySelectedPeep;
 
 
@@ -54,18 +56,24 @@ namespace POP.Modules.Gameplay
 
         public void IsSelected(PopPeep pp)
         {
+            if (_gpFSM.GetState() != GameStates.Gameplay)
+                return;
+
             if (_currentlySelectedPeep == null)
                 _currentlySelectedPeep = pp;
             else
             {
-                if (_currentlySelectedPeep.Type == pp.Type)
+                if (pp != _currentlySelectedPeep)
                 {
-                    OnMatch(_currentlySelectedPeep,pp);
-                }
-                else
-                {
-                    
-                    OnMismatch(_currentlySelectedPeep, pp);
+                    float dist = Vector2.Distance(_currentlySelectedPeep.ArrayPos, pp.ArrayPos);
+                    if (_currentlySelectedPeep.Type == pp.Type && dist < _gridInterval * 1.5f)
+                    {
+                        OnMatch(_currentlySelectedPeep, pp);
+                    }
+                    else
+                    {
+                        OnMismatch(_currentlySelectedPeep, pp);
+                    }
                 }
                 _currentlySelectedPeep = null;
             }
@@ -119,6 +127,10 @@ namespace POP.Modules.Gameplay
                 yield return null;
             }
 
+            Vector2 arrayPos = pp1.ArrayPos;
+            pp1.SetArrayPos(pp2.ArrayPos);
+            pp2.SetArrayPos(arrayPos);
+
             pp1.Enable(true);
             pp2.Enable(true);
 
@@ -144,6 +156,8 @@ namespace POP.Modules.Gameplay
             {
                 int randColorIndex = UnityEngine.Random.Range(0, availableTypes);
 
+                GameDataContainer.PossibleMatchesByType[(PopPeep.PopPeepTypes)randColorIndex] += 1;
+
                 int rand = UnityEngine.Random.Range(0, allPeeps.Count-1);
                 PopPeep ppRef = allPeeps[rand];
                 ppRef.SetType((PopPeep.PopPeepTypes)randColorIndex);
@@ -168,18 +182,23 @@ namespace POP.Modules.Gameplay
             _currentlySelectedPeep = null;
             GameDataContainer.Refresh();
 
+            InGameMenu temp = MenuManager.Instance.PeekMenu<InGameMenu>();
+            temp.CountdownTextScale = Vector2.zero;
 
             //we can finally start creating actors now
             _drawArea = GameConfigurationContainer.Instance.GetDrawArea(GameConfigurationContainer.Difficulty);
 
             int gridSize = GameConfigurationContainer.Instance.GetGridSize(GameConfigurationContainer.Difficulty);
+            GameDataContainer.GridSize = gridSize;
 
             float widthInterval = _drawArea.rectTransform.rect.width / (float)gridSize;
             float heightInterval = _drawArea.rectTransform.rect.height / (float)gridSize;
 
+            _gridInterval = widthInterval;
+
             Vector2 placementPos =Vector2.one;
-            placementPos.x = ((gridSize + widthInterval) / 2) * -1;
-            placementPos.y = (gridSize - heightInterval) / 2;
+            placementPos.x = ((_drawArea.rectTransform.rect.width + widthInterval) / 2) * -1;
+            placementPos.y = (_drawArea.rectTransform.rect.height - heightInterval) / 2;
 
 
             List<PopPeep> allGeneratedPeeps = new List<PopPeep>();
@@ -207,23 +226,23 @@ namespace POP.Modules.Gameplay
                     pp.transform.localPosition = placementPos;
 
                     //give it a little padding
-                    pp.transform.localScale = Vector3.one * 0.8f;
+                    pp.transform.localScale = Vector2.one * (widthInterval * 0.8f);
 
                     pp.SetArrayPos(row, col);
 
                     allGeneratedPeeps.Add(pp);
                 }
 
-                placementPos.x = ((gridSize + widthInterval) / 2) * -1;
+                placementPos.x = ((_drawArea.rectTransform.rect.width + widthInterval) / 2) * -1;
                 placementPos.y -= heightInterval;
             }
 
 
             InitializePeeps(allGeneratedPeeps);
 
-            Color drawAreaCol = _drawArea.color;
+            Color drawAreaCol = _drawArea.material.color;
             drawAreaCol.a = 1;
-            _drawArea.color = drawAreaCol;
+            _drawArea.material.color = drawAreaCol;
 
             TemporaryVariableManager.SetTemporaryVariable<float>(this, _commonTimerIndex, 0, true);
 
@@ -247,9 +266,9 @@ namespace POP.Modules.Gameplay
 
             float nVal = timer / Constants.globalAnimationSpeed;
 
-            Color drawAreaCol = _drawArea.color;
+            Color drawAreaCol = _drawArea.material.color;
             drawAreaCol.a = Mathf.Lerp(1, 0, nVal);
-            _drawArea.color = drawAreaCol;
+            _drawArea.material.color = drawAreaCol;
 
             if (nVal == 1)
             {
@@ -265,15 +284,25 @@ namespace POP.Modules.Gameplay
 
         private void InitCountdown()
         {
-            TemporaryVariableManager.SetTemporaryVariable<float>(this, _commonTimerIndex, 0, true);
+            TemporaryVariableManager.SetTemporaryVariable<float>(this, _commonTimerIndex, GameConfigurationContainer.GameCountdownDuration, true);
         }
 
         private void UpdateCountdown()
         {
             float timer = TemporaryVariableManager.GetTemporaryVariable<float>(this, _commonTimerIndex);
-            timer += Time.deltaTime;
+            timer -= Time.deltaTime;
 
-            if (timer > GameConfigurationContainer.GameCountdownDuration)
+            InGameMenu temp = MenuManager.Instance.PeekMenu<InGameMenu>();
+            temp.CountdownText = timer > 1 ? ((int)timer).ToString() : Constants.countdownGoText;
+            float mod = timer % 1;
+            mod = Mathfx.Hermite(0, 1, mod);
+            temp.CountdownTextScale = Vector2.one * Mathfx.Sinerp(0.0f, 1, mod);
+            Color col = temp.CountdownTextColor;
+            col.a = mod;
+            temp.CountdownTextColor = col;
+            
+
+            if (timer <= 0)
             {
                 _gpFSM.SetState(GameStates.Gameplay);
             }
@@ -317,6 +346,7 @@ namespace POP.Modules.Gameplay
         private void TerminateGameplay()
         {
             // do i need this?
+            
         }
 
 
@@ -337,9 +367,9 @@ namespace POP.Modules.Gameplay
 
             float nVal = timer / Constants.globalAnimationSpeed;
 
-            Color drawAreaCol = _drawArea.color;
-            drawAreaCol.a = Mathf.Lerp(1, 0, nVal);
-            _drawArea.color = drawAreaCol;
+            Color drawAreaCol = _drawArea.material.color;
+            drawAreaCol.a = Mathf.Lerp(0, 1, nVal);
+            _drawArea.material.color = drawAreaCol;
 
             if (nVal == 1)
             {
@@ -350,6 +380,7 @@ namespace POP.Modules.Gameplay
         private void TerminateComplete()
         {
             GameManager.Instance.SetGameState(GameManager.GameStates.GameOver);
+            ActorManager.Instance.DestroyAllActorOfType<PopPeep>();
         }
 
 

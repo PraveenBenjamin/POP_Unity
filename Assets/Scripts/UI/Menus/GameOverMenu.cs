@@ -42,7 +42,7 @@ namespace POP.UI.Menus
                 CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.MainMenu, () =>
                 {
                     GameManager.Instance.SetGameState(GameManager.GameStates.Pregame);
-                    MenuManager.Instance.PushMenu<MainMenu>();
+                    
                 },BaseTransitioner.LerpType.Cubic,Constants.globalAnimationSpeed);
             });
         }
@@ -74,7 +74,8 @@ namespace POP.UI.Menus
 
             foreach (KeyValuePair<PopPeep.PopPeepTypes, Slider> pair in _ppSliderDic)
             {
-                pair.Value.value = Mathfx.Clerp(0, GameDataContainer.MatchCountByType[pair.Key], nVal);
+                float matchRatio = GameDataContainer.GetMatchRatio(pair.Key);
+                pair.Value.value = Mathfx.Hermite(0, GameDataContainer.GetMatchRatio(pair.Key), nVal);
             }
 
             if (nVal == 1)

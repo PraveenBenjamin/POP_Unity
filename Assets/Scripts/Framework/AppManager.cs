@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using POP.Modules;
-
+using UnityEngine.Events;
 
 namespace POP.Framework
 {
@@ -29,6 +29,8 @@ namespace POP.Framework
 
         [SerializeField]
         private GameManager _gameManagerPrefab;
+
+        UnityAction _maintainenceDelegate = TemporaryVariableManager.GetMaintainenceDelegate();
 
 
         public enum AppStates
@@ -104,6 +106,8 @@ namespace POP.Framework
         protected override void UpdateSingleton()
         {
             _appManagerFSM.UpdateStateMachine();
+            _maintainenceDelegate.Invoke();
+            
         }
 
         protected override void OnDestroySingleton()

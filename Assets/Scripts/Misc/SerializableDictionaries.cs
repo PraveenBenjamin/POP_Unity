@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using POP.Modules.Gameplay;
+using POP.Framework;
 
 namespace POP.Framework
 {
@@ -32,5 +33,9 @@ namespace POP.Framework
 
     [System.Serializable]
     public class StringGODict : SerializableDictionaryBase<string, GameObject> { }
+
+
+    [System.Serializable]
+    public class AudioClipTypeAudioClipDic : SerializableDictionaryBase<AudioManager.AudioClipType, AudioClip> { }
 
 }

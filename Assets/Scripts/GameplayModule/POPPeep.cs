@@ -35,6 +35,13 @@ namespace POP.Modules.Gameplay
         protected FSM<PopPeepStates> _ppFSM;
         protected PopPeepTypes _type;
         protected Vector2 _arrayPos;
+        public Vector2 ArrayPos
+        {
+            get
+            {
+                return _arrayPos;
+            }
+        }
 
 
         public PopPeepTypes Type
@@ -64,6 +71,12 @@ namespace POP.Modules.Gameplay
             _type = toSet;
             InitializeType();
         }
+
+        public void SetArrayPos(Vector2 arrayPos)
+        {
+            _arrayPos = arrayPos;
+        }
+
 
         public void SetArrayPos(int row, int col)
         {
@@ -102,27 +115,11 @@ namespace POP.Modules.Gameplay
         }
 
 
-        public void InitSelected()
-        {
-            GameplayScript.Instance.IsSelected(this);
-            GetComponentInChildren<Text>().text = "!";
-        }
-
-        public void UpdateSelected()
-        {
-            
-        }
-
-        public void TerminateSelected()
-        {
-            GameplayScript.Instance.IsSelected(this);
-            GetComponentInChildren<Text>().text = "";
-        }
-
 
         public void OnClicked()
         {
-            _ppFSM.SetState(PopPeepStates.Selected);
+            GameplayScript.Instance.IsSelected(this);
+            GetComponentInChildren<Text>().text = "!";
         }
 
         public override void UpdateActor()

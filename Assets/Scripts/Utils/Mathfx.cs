@@ -2,6 +2,21 @@
 
 public sealed class Mathfx
 {
+
+    public static double CubicEaseIn(double t, double b, double c, double d)
+    {
+        return c * (t /= d) * t * t + b;
+    }
+    public static double CubicEaseOut(double t, double b, double c, double d,int levels)
+    {
+        return c * ((t = t / d - 1) * t * t + 1) + b;
+    }
+    public static double CubicEaseInOut(double t, double b, double c, double d)
+    {
+        if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
+        return c / 2 * ((t -= 2) * t * t + 2) + b;
+    }
+
     //Ease in out
     public static float Hermite(float start, float end, float value)
     {

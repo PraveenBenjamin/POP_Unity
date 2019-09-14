@@ -38,6 +38,17 @@ namespace POP.UI.Menus
             GameConfigurationContainer.Difficulty = (DifficultyLevel) requiredDifficulty;
         }
 
+        public void OnBackToMainMenu()
+        {
+            MenuManager.Instance.PopMenu(() =>
+            {
+                CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.MainMenu, () =>
+                 {
+                     MenuManager.Instance.PushMenu<MainMenu>();
+                 }, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
+            });
+        }
+
 
         protected override void ConstructionRoutineInternal()
         {

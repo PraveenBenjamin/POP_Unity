@@ -63,7 +63,7 @@ namespace POP.UI.Menus
 
         protected override void InitMain()
         {
-            CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.MainMenu,null, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
+            //CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.MainMenu,null, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
         }
 
         protected override void TerminateMain()
@@ -96,7 +96,7 @@ namespace POP.UI.Menus
                     });
                     break;
                 case MainMenuButtonType.Options:
-                    
+                        MenuManager.Instance.PushMenu<OptionsMenu>();
                     break;
                 case MainMenuButtonType.Achievements:
                     break;

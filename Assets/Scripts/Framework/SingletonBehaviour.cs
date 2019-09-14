@@ -24,7 +24,7 @@ public abstract class SingletonBehaviour<T> : MonoBehaviour where T: class
     {
         if (_instance != null)
         {
-            Debug.LogWarning("Attempting to create a second instance of a SingletonBehaviour. This is not allowed. Destroying component");
+            Debug.LogWarning("Attempting to create a second instance of a SingletonBehaviour. This is not allowed. Destroying component"+this.GetType().ToString());
             DestroyImmediate(this);
             return;
         }
@@ -37,8 +37,9 @@ public abstract class SingletonBehaviour<T> : MonoBehaviour where T: class
         UpdateSingleton();
     }
 
-    ~SingletonBehaviour()
+    private void OnDestroy()
     {
+        _instance = null;
         OnDestroySingleton();
     }
 }

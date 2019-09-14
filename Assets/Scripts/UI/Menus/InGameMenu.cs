@@ -37,6 +37,49 @@ namespace POP.UI.Menus
             }
         }
 
+        [SerializeField]
+        TextMeshProUGUI _countdownText;
+        public string CountdownText
+        {
+            get
+            {
+                return _countdownText.text;
+            }
+            set
+            {
+                _countdownText.text = value;
+            }
+        }
+
+        public Vector2 CountdownTextScale
+        {
+            get
+            {
+                return _countdownText.transform.localScale;
+            }
+            set
+            {
+                _countdownText.transform.localScale = value;
+            }
+
+        }
+
+        public Color CountdownTextColor
+        {
+            get
+            {
+                return _countdownText.color;
+            }
+            set
+            {
+                _countdownText.color = value;
+            }
+
+        }
+
+
+
+
         public void OnPauseButtonClicked()
         {
             GameplayScript.Instance.Pause();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using POP.Framework;
+using POP.Modules.Gameplay;
 
 namespace POP.Modules
 {
@@ -24,10 +25,7 @@ namespace POP.Modules
         [SerializeField]
         private Sprite[] _splashScreens;
 
-        [SerializeField]
         private float _timePerScreen;
-
-        [SerializeField]
         private float _timePerTransition;
 
         private FSM<SplashScreenStates> _ssFSM;
@@ -46,6 +44,9 @@ namespace POP.Modules
 
             TemporaryVariableManager.SetTemporaryVariable<int>(Instance, _currSplashIndex, 0);
             SetSplashScreen(0);
+
+            _timePerTransition = GameConfigurationContainer.SplashScreenTransitionTime;
+            _timePerScreen = GameConfigurationContainer.SplashScreenHangTime;
         }
 
 

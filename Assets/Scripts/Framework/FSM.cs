@@ -76,7 +76,7 @@ namespace POP.Framework
 
                 if (_initCallback == null && _updateCallback == null && _terminateCallback == null)
                 {
-                    Debug.Log("empty state detected, was this intended?" + _baseEnumValue);
+                    //Debug.Log("empty state detected, was this intended?" + _baseEnumValue);
                 }
             }
 
