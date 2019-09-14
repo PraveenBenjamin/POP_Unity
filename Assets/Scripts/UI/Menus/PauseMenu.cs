@@ -13,7 +13,7 @@ namespace POP.UI.Menus
 
         public void OnBackToMainMenuClicked()
         {
-
+            //TODO
         }
 
         public void OnResumeClicked()
@@ -24,6 +24,11 @@ namespace POP.UI.Menus
             });
         }
 
+        public void OnOptionsClicked()
+        {
+          //TODO
+        }
+
         protected override void ConstructionRoutineInternal()
         {
            
@@ -31,27 +36,27 @@ namespace POP.UI.Menus
 
         protected override void DestructionRoutineInternal()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void InitMain()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void InputDependantUpdateRoutine()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void TerminateMain()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void UpdateMain()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
     }
 }

@@ -30,6 +30,7 @@ namespace POP.Framework
             {
                 GameObject mmGo = new GameObject("MenuManager");
                 mmGo.AddComponent<MenuManager>();
+                mmGo.transform.SetParent(AppManager.Instance.transform, false);
             }
 
 
@@ -37,6 +38,7 @@ namespace POP.Framework
             {
                 GameObject amGo = new GameObject("ActorManager");
                 amGo.AddComponent<ActorManager>();
+                amGo.transform.SetParent(AppManager.Instance.transform, false);
             }
 
             MenuManager.Instance.PushMenu<MainMenu>();
@@ -56,12 +58,14 @@ namespace POP.Framework
             {
                 GameObject gpGo = new GameObject("GameplayHandler");
                 gpGo.AddComponent<GameplayScript>();
+                gpGo.transform.SetParent(AppManager.Instance.transform, false);
             });
         }
 
         private void UpdateInGame()
         {
-            GameplayScript.Instance.UpdateGameplayScript();
+            if(GameplayScript.Instance != null)
+                GameplayScript.Instance.UpdateGameplayScript();
         }
 
         private void TerminateInGame()
@@ -76,10 +80,13 @@ namespace POP.Framework
 
         public void UpdateGameManager()
         {
-            _gmFSM.UpdateStateMachine();
 
-            //we will be using the actor manager throughout the program
+            MenuManager.Instance.UpdateMenuManager();
+
             ActorManager.Instance.UpdateActorManager();
+
+            _gmFSM.UpdateStateMachine();
+            
         }
 
 

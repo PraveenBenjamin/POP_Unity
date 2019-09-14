@@ -9,7 +9,7 @@ namespace POP.UI.Menus
 {
     public class InGameMenu : BaseMenu
     {
-
+        [SerializeField]
         TextMeshProUGUI _timerText;
         public string TimerText
         {
@@ -22,6 +22,8 @@ namespace POP.UI.Menus
                 _timerText.text = value;
             }
         }
+
+        [SerializeField]
         TextMeshProUGUI _scoreText;
         public string ScoreText
         {
@@ -43,32 +45,32 @@ namespace POP.UI.Menus
 
         protected override void ConstructionRoutineInternal()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void DestructionRoutineInternal()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void InitMain()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void InputDependantUpdateRoutine()
         {
-            throw new System.NotImplementedException();
+           // throw new System.NotImplementedException();
         }
 
         protected override void TerminateMain()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void UpdateMain()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
     }

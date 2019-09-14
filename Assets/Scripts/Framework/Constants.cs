@@ -15,6 +15,6 @@ namespace POP.Framework
         public const string FSMTerminatePrefix = "Terminate";
 
 
-        public const float globalAnimationSpeed = 2;
+        public const float globalAnimationSpeed = 1.0f;
     }
 }

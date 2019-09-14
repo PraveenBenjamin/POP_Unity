@@ -43,7 +43,7 @@ namespace POP.UI.Menus
                 {
                     GameManager.Instance.SetGameState(GameManager.GameStates.Pregame);
                     MenuManager.Instance.PushMenu<MainMenu>();
-                });
+                },BaseTransitioner.LerpType.Cubic,Constants.globalAnimationSpeed);
             });
         }
 

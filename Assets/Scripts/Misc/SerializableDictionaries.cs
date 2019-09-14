@@ -8,7 +8,7 @@ using POP.Modules.Gameplay;
 namespace POP.Framework
 {
     [System.Serializable]
-    public class DifficultyLevelImageDict : SerializableDictionaryBase<DifficultyLevel, Image> { }
+    public class DifficultyLevelConfigurationDict : SerializableDictionaryBase<DifficultyLevel, GameConfigurationContainer.DifficultyLevelConfiguration> { }
 
     [System.Serializable]
     public class DifficultyLevelIntDict : SerializableDictionaryBase<DifficultyLevel, int> { }
@@ -21,5 +21,16 @@ namespace POP.Framework
 
     [System.Serializable]
     public class PopPeepTypeSliderDict : SerializableDictionaryBase<PopPeep.PopPeepTypes, Slider> { }
+
+    [System.Serializable]
+    public class RectTransformArrayOfTransitionDatumDict : SerializableDictionaryBase<RectTransform, BaseTransitioner.TransitionDatum[]> { }
+
+
+    [System.Serializable]
+    public class StringTransitionDataDict : SerializableDictionaryBase<string, BaseTransitioner.TransitionData> { }
+
+
+    [System.Serializable]
+    public class StringGODict : SerializableDictionaryBase<string, GameObject> { }
 
 }

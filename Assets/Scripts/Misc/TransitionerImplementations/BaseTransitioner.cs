@@ -5,7 +5,8 @@ using System.Reflection;
 using UnityEngine.Events;
 using POP.Framework;
 
-public abstract class BaseTransitioner : MonoBehaviour
+//can extend this to support more than just Vector3, but dont have the time
+public class BaseTransitioner : MonoBehaviour
 {
 
     public enum LerpType
@@ -15,70 +16,104 @@ public abstract class BaseTransitioner : MonoBehaviour
         Sin
     }
 
+    [System.Serializable]
     public class TransitionDatum
     {
-        public System.Type componentToAffect;
-        public string propertyToAffect;
-        public object[] startValues;
-        public object[] endValues;
+        public string hierarchyOfTransform;
+        public string typeOfComponentToAffect;
+        public string nameOfPropertyToAffect;
+        public string typeOfPropertyToAffect;
+        public string startValue;
+        public string endValue;
         public LerpType lerpType;
     }
 
+    [System.Serializable]
+    public class TransitionData
+    {
+        public BaseTransitioner.TransitionDatum[] Data;
+    }
 
-    protected class TransitionDatumInternal
+    [SerializeField]
+    public TransitionData _transitionData;
+
+
+    protected class TransitionDatumInternal<T>
     {
         public Component _component;
         public PropertyInfo _property;
-        public object[] _startValues;
-        public object[] _endValues;
+        public T _startValue;
+        public T _endValue;
         public LerpType _lerpType;
     }
 
-    private List<TransitionDatumInternal> _transitions = new List<TransitionDatumInternal>();
+    private List<TransitionDatumInternal<Vector3>> _transitions = new List<TransitionDatumInternal<Vector3>>();
     private float _transitionTime;
     private int _transitionTimerIndex = 0;
     private int _onCompleteTransitionCallbackIndex = 1;
     private int _direction = 0;
 
 
-    public abstract void InitializeTransitioner();
-    
-    protected string InitializeTransitions(TransitionDatum[] transitionsToPerform, float transitionTime)
+
+    private void LogAllPropertiesAndTheirTypes(Component toLog)
+    {
+        PropertyInfo[] allProperties = toLog.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        string toPrint = "";
+        for (int i = 0; i < allProperties.Length; ++i)
+        {
+            toPrint += allProperties[i].Name + " " + allProperties[i].PropertyType +"\n";
+        }
+        Debug.Log(toPrint);
+    }
+
+    public string InitializeTransitions(float transitionTime)
+    {
+        return InitializeTransitions(_transitionData.Data, transitionTime);
+    }
+
+    private string InitializeTransitions(TransitionDatum[] transitionsToPerform, float transitionTime)
     {
 
         string errorMessage = "";
         for (int i = 0; i < transitionsToPerform.Length; ++i)
         {
+
+            
+
+
             TransitionDatum dat = transitionsToPerform[i];
-            Component requiredComponent = GetComponent(dat.componentToAffect);
-            bool canPerform = requiredComponent != null;
+            Transform requiredTransform = transform.Find(dat.hierarchyOfTransform);
+            bool canPerform = requiredTransform != null;
             if (!canPerform)
             {
-                errorMessage = "unable to find component of type " + dat.componentToAffect.Name + " in object of type " + GetType().Name;
+                errorMessage = "unable to find child at hierarchy" + dat.hierarchyOfTransform + " in object of type " + GetType().Name;
                 break;
             }
 
-            PropertyInfo requiredProperty = requiredComponent.GetType().GetProperty(dat.propertyToAffect);
+            Component requiredComponent = requiredTransform.GetComponent(dat.typeOfComponentToAffect);
+
+            canPerform = requiredComponent != null;
+            if (!canPerform)
+            {
+                errorMessage = "unable to find component of type " + dat.typeOfComponentToAffect + " in object of type " + GetType().Name;
+                break;
+            }
+
+            LogAllPropertiesAndTheirTypes(requiredComponent);
+
+            PropertyInfo requiredProperty = requiredComponent.GetType().GetProperty(dat.nameOfPropertyToAffect);
             canPerform = requiredProperty != null;
             if (!canPerform)
             {
-                errorMessage = "unable to find property with the name " + dat.propertyToAffect + " in object of type " + GetType().Name;
+                errorMessage = "unable to find property with the name " + dat.nameOfPropertyToAffect + " in object of type " + GetType().Name;
                 break;
             }
 
-
-            canPerform = requiredProperty.GetType().IsArray;
-            if (!canPerform)
-            {
-                errorMessage = "unable to find property with the name " + dat.propertyToAffect + " in object of type " + GetType().Name;
-                break;
-            }
-
-            TransitionDatumInternal toAdd = new TransitionDatumInternal();
+            TransitionDatumInternal<Vector3> toAdd = new TransitionDatumInternal<Vector3>();
             toAdd._component = requiredComponent;
             toAdd._property = requiredProperty;
-            toAdd._startValues = dat.startValues;
-            toAdd._endValues = dat.endValues;
+            toAdd._startValue = Utils.Vector3FromString(dat.startValue);
+            toAdd._endValue = Utils.Vector3FromString(dat.endValue);
             toAdd._lerpType = dat.lerpType;
 
             _transitions.Add(toAdd);
@@ -109,7 +144,7 @@ public abstract class BaseTransitioner : MonoBehaviour
         if (direction >= 0)
             _direction = 1;
         else
-            _direction = 1;
+            _direction = -1;
 
         TemporaryVariableManager.SetTemporaryVariable<UnityAction>(this,_onCompleteTransitionCallbackIndex, OnTransitionComplete, true);
         TemporaryVariableManager.SetTemporaryVariable<float>(this, _transitionTimerIndex, 0, true);
@@ -121,9 +156,21 @@ public abstract class BaseTransitioner : MonoBehaviour
 
         for (int i = 0; i < _transitions.Count; ++i)
         {
-            TransitionDatumInternal tdi = _transitions[i];
+
+            TransitionDatumInternal<Vector3> tdi = _transitions[i];
             // TODO:- debug and make this happen, otherwise hard code the required behaviour for the purposes of this challenge
- 
+
+            switch (tdi._lerpType)
+            {
+                default:
+                case LerpType.Cubic:
+                    nVal = Mathfx.Hermite(0, 1, nVal);
+                break;
+            }
+
+            Vector3 temp = Vector3.Lerp(tdi._startValue, tdi._endValue, nVal);
+            tdi._property.SetValue(tdi._component, temp);
+            //Debug.Log(tdi._property.GetValue(tdi._component).ToString()+" "+nVal+" "+temp.ToString());
         }
     }
 

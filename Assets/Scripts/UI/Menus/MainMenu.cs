@@ -31,14 +31,6 @@ namespace POP.UI.Menus
         private RectTransform _titlebar;
 
         [SerializeField]
-        private GenericPositionTransitioner _titleBarTransitioner;
-
-        [SerializeField]
-        private GenericPositionTransitioner _buttonPanelTransitioner;
-
-
-
-        [SerializeField]
         private Image _billboardImage;
 
         [SerializeField]
@@ -71,7 +63,7 @@ namespace POP.UI.Menus
 
         protected override void InitMain()
         {
-            CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.MainMenu);
+            CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.MainMenu,null, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
         }
 
         protected override void TerminateMain()
@@ -100,7 +92,7 @@ namespace POP.UI.Menus
                         CameraTransitioner.Instance.TransitionTo(posToBe, () =>
                          {
                              MenuManager.Instance.PushMenu<LevelSelectMenu>();
-                         });
+                         }, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
                     });
                     break;
                 case MainMenuButtonType.Options:

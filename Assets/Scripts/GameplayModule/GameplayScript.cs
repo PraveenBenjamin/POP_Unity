@@ -13,7 +13,7 @@ namespace POP.Modules.Gameplay
 
         public enum GameStates
         {
-            Initilizing,
+            Initializing,
             Countdown,
             Gameplay,
             Paused,
@@ -30,24 +30,132 @@ namespace POP.Modules.Gameplay
         private int _gameTimerIndex = 1;
         private int _scoreIndex = 2;
 
+        private PopPeep _currentlySelectedPeep;
+
 
         protected override void InitializeSingleton()
         {
+            _currentlySelectedPeep = null;
             _gpFSM = new FSM<GameStates>();
+            _gpFSM.Initialize(this);
         }
 
-        internal void Resume()
+        public void Resume()
         {
             //countdown again
             _gpFSM.SetState(GameStates.Countdown);
         }
 
-        internal void Pause()
+        public void Pause()
         {
             //stay dormant essentially
             _gpFSM.SetState(GameStates.Paused);
         }
 
+        public void IsSelected(PopPeep pp)
+        {
+            if (_currentlySelectedPeep == null)
+                _currentlySelectedPeep = pp;
+            else
+            {
+                if (_currentlySelectedPeep.Type == pp.Type)
+                {
+                    OnMatch(_currentlySelectedPeep,pp);
+                }
+                else
+                {
+                    
+                    OnMismatch(_currentlySelectedPeep, pp);
+                }
+                _currentlySelectedPeep = null;
+            }
+        }
+
+        private void OnMatch(PopPeep pp1, PopPeep pp2)
+        {
+            //MATCH!
+            ActorManager.Instance.DestroyActor(pp1);
+            ActorManager.Instance.DestroyActor(pp2);
+            int score = TemporaryVariableManager.GetTemporaryVariable<int>(this, _scoreIndex);
+            score += 10;
+            MenuManager.Instance.PeekMenu<InGameMenu>().ScoreText = score.ToString();
+            TemporaryVariableManager.SetTemporaryVariable<int>(this, _scoreIndex, score, true);
+
+            if (!GameDataContainer.MatchCountByType.ContainsKey(pp1.Type))
+                GameDataContainer.MatchCountByType.Add(pp1.Type, 0);
+
+            GameDataContainer.MatchCountByType[pp1.Type] += 1;
+        }
+
+
+        private IEnumerator SwapPopPeeps(PopPeep pp1, PopPeep pp2,float transitionTime = 2,BaseTransitioner.LerpType lType = BaseTransitioner.LerpType.Cubic)
+        {
+            float timer = 0;
+
+            if (pp1 == null || pp2 == null)
+                yield return 0;
+
+            Vector3 startPos = pp1.transform.position;
+            Vector3 endPos = pp2.transform.position;
+            float nVal = 0;
+
+            pp1.Enable(false);
+            pp2.Enable(false);
+
+            while (timer < transitionTime)
+            {
+                timer += Time.deltaTime;
+                nVal = timer / transitionTime;
+
+                switch (lType)
+                {
+                    default:
+                        nVal = Mathfx.Hermite(0, 1, nVal);
+                    break;
+                }
+                pp1.transform.position = Vector3.Lerp(startPos, endPos, nVal);
+                pp2.transform.position = Vector3.Lerp(startPos, endPos, 1- nVal);
+
+                yield return null;
+            }
+
+            pp1.Enable(true);
+            pp2.Enable(true);
+
+            yield return 0;
+        }
+
+
+        private void OnMismatch(PopPeep pp1, PopPeep pp2)
+        {
+            //SWAP!
+            //i normally dont use coroutines, but i guess it would help to show that i do know how
+            // and i dont really have too much time left....
+            StartCoroutine(SwapPopPeeps(pp1, pp2,Constants.globalAnimationSpeed));
+
+        }
+
+
+        private void InitializePeeps(List<PopPeep> allPeeps)
+        {
+            int count = allPeeps.Count;
+            int availableTypes = System.Enum.GetNames(typeof(PopPeep.PopPeepTypes)).Length - 1;
+            for (int i = count; i > 0; i -= 2)
+            {
+                int randColorIndex = UnityEngine.Random.Range(0, availableTypes);
+
+                int rand = UnityEngine.Random.Range(0, allPeeps.Count-1);
+                PopPeep ppRef = allPeeps[rand];
+                ppRef.SetType((PopPeep.PopPeepTypes)randColorIndex);
+                allPeeps.RemoveAt(rand);
+
+                rand = UnityEngine.Random.Range(0, allPeeps.Count - 1);
+                ppRef = allPeeps[rand];
+                ppRef.SetType((PopPeep.PopPeepTypes)randColorIndex);
+                allPeeps.RemoveAt(rand);
+
+            }
+        }
 
         private void InitInitializing()
         {
@@ -57,6 +165,10 @@ namespace POP.Modules.Gameplay
                 amGo.AddComponent<ActorManager>();
             }
 
+            _currentlySelectedPeep = null;
+            GameDataContainer.Refresh();
+
+
             //we can finally start creating actors now
             _drawArea = GameConfigurationContainer.Instance.GetDrawArea(GameConfigurationContainer.Difficulty);
 
@@ -65,7 +177,12 @@ namespace POP.Modules.Gameplay
             float widthInterval = _drawArea.rectTransform.rect.width / (float)gridSize;
             float heightInterval = _drawArea.rectTransform.rect.height / (float)gridSize;
 
-            Vector2 placementPos = new Vector2(widthInterval/2,-heightInterval/2);
+            Vector2 placementPos =Vector2.one;
+            placementPos.x = ((gridSize + widthInterval) / 2) * -1;
+            placementPos.y = (gridSize - heightInterval) / 2;
+
+
+            List<PopPeep> allGeneratedPeeps = new List<PopPeep>();
 
             for (int row = 0; row < gridSize; ++row)
             {
@@ -75,17 +192,34 @@ namespace POP.Modules.Gameplay
                     PopPeep pp = ActorManager.Instance.CreateActor<PopPeep>(row.ToString()+"_"+col.ToString());
 
                     //place our little dudes
-                    pp.transform.SetParent(_drawArea.transform,false);
+                    pp.transform.SetParent(_drawArea.transform.parent,false);
+                    pp.transform.SetAsFirstSibling();
+
+                    RectTransform pprt = pp.GetComponent<RectTransform>();
+                    pprt.anchorMin = new Vector2(0, 1);
+                    pprt.anchorMax = new Vector2(0, 1);
+                    pprt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 1);// = new Rect(Vector2.zero, 1);
+                    pprt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 1);
+                    //pprt.rect.height = 1;
 
                     placementPos.x += widthInterval;
 
                     pp.transform.localPosition = placementPos;
+
+                    //give it a little padding
+                    pp.transform.localScale = Vector3.one * 0.8f;
+
+                    pp.SetArrayPos(row, col);
+
+                    allGeneratedPeeps.Add(pp);
                 }
 
-                placementPos.x = widthInterval / 2;
+                placementPos.x = ((gridSize + widthInterval) / 2) * -1;
                 placementPos.y -= heightInterval;
             }
 
+
+            InitializePeeps(allGeneratedPeeps);
 
             Color drawAreaCol = _drawArea.color;
             drawAreaCol.a = 1;
@@ -97,7 +231,7 @@ namespace POP.Modules.Gameplay
             MenuManager.Instance.PeekMenu<InGameMenu>().ScoreText = "0";
 
             TemporaryVariableManager.SetTemporaryVariable<float>(this, _gameTimerIndex, (float)(GameConfigurationContainer.Instance.GetMaxGameTime(GameConfigurationContainer.Difficulty)), true);
-            TemporaryVariableManager.SetTemporaryVariable<float>(this, _scoreIndex, 0, true);
+            TemporaryVariableManager.SetTemporaryVariable<int>(this, _scoreIndex, 0, true);
 
         }
 
@@ -165,6 +299,8 @@ namespace POP.Modules.Gameplay
             if (timeAvailable < 0)
                 timeAvailable = 0;
 
+            MenuManager.Instance.PeekMenu<InGameMenu>().TimerText = timeAvailable.ToString();
+
             TemporaryVariableManager.SetTemporaryVariable<float>(this, _gameTimerIndex, timeAvailable);
 
 
@@ -224,7 +360,8 @@ namespace POP.Modules.Gameplay
 
         protected override void OnDestroySingleton()
         {
-            throw new System.NotImplementedException();
+            _currentlySelectedPeep = null;
+            StopAllCoroutines();
         }
     }
 }

@@ -40,6 +40,5 @@ public abstract class SingletonBehaviour<T> : MonoBehaviour where T: class
     ~SingletonBehaviour()
     {
         OnDestroySingleton();
-        _instance = null;
     }
 }

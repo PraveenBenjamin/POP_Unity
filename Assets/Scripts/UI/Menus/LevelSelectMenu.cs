@@ -10,17 +10,17 @@ namespace POP.UI.Menus
     public class LevelSelectMenu : BaseMenu
     {
 
+        [SerializeField]
         private Button _leftButton;
+
+        [SerializeField]
         private Button _rightButton;
 
-        public void OnDifficultySelected(int difficulty)
+        public void OnDifficultySelected()
         {
             MenuManager.Instance.PopMenu(() =>
             {
                 GameManager.Instance.SetGameState(GameManager.GameStates.InGame);
-
-                //set the appropriate value in the container
-                GameConfigurationContainer.Difficulty = (DifficultyLevel)difficulty;
             });
         }
 
@@ -30,8 +30,10 @@ namespace POP.UI.Menus
             int maxDiffLevel = (int)DifficultyLevel.Hard;
             int requiredDifficulty = Mathf.Clamp(currentDifficulty + delta,0, maxDiffLevel);
 
-            _leftButton.interactable = requiredDifficulty == 0;
-            _rightButton.interactable = requiredDifficulty == maxDiffLevel;
+            _leftButton.interactable = requiredDifficulty != 0;
+            _rightButton.interactable = requiredDifficulty != maxDiffLevel;
+
+            CameraTransitioner.Instance.TransitionTo((CameraTransitioner.CameraPositions)(requiredDifficulty + 2), null, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
 
             GameConfigurationContainer.Difficulty = (DifficultyLevel) requiredDifficulty;
         }
@@ -39,12 +41,12 @@ namespace POP.UI.Menus
 
         protected override void ConstructionRoutineInternal()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void DestructionRoutineInternal()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void InitMain()
@@ -54,29 +56,17 @@ namespace POP.UI.Menus
 
         protected override void InputDependantUpdateRoutine()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void TerminateMain()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void UpdateMain()
         {
-            throw new System.NotImplementedException();
-        }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            //throw new System.NotImplementedException();
         }
     }
 }

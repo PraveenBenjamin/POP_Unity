@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace POP.Framework
 {
-    [RequireComponent(typeof(UnityEngine.Canvas))]
+    [RequireComponent(typeof(UnityEngine.RectTransform))]
     public abstract class BaseMenu : MonoBehaviour
     {
 
@@ -19,7 +19,6 @@ namespace POP.Framework
 
         protected FSM<BaseMenuStates> _baseMenuFSM;
 
-       
         protected BaseTransitioner _transitionerToUse;
 
         private int _onTransitionInCBIndex = 0;
@@ -50,7 +49,7 @@ namespace POP.Framework
 
         protected abstract void InputDependantUpdateRoutine();
 
-        protected virtual void InitializeTransitionIn()
+        protected virtual void InitTransitionIn()
         {
             _transitionerToUse.PerformTransition(()=> {
                 _baseMenuFSM.SetState(BaseMenuStates.Main);
@@ -73,12 +72,12 @@ namespace POP.Framework
         }
 
 
-        protected virtual void InitializeTransitionOut()
+        protected virtual void InitTransitionOut()
         {
             _transitionerToUse.PerformTransition(() => {
                 _baseMenuFSM.SetState(BaseMenuStates.Inactive);
                 TemporaryVariableManager.GetTemporaryVariable<UnityAction<BaseMenu>>(this, _onTransitionOutCBIndex)?.Invoke(this);
-            });
+            },-1);
         }
 
         protected virtual void UpdateTransitionOut()
@@ -100,7 +99,7 @@ namespace POP.Framework
 
             if (_transitionerToUse == null)
                 _transitionerToUse = GetComponent<BaseTransitioner>();
-            _transitionerToUse.InitializeTransitioner();
+            
             ConstructionRoutineInternal();
         }
 
@@ -119,14 +118,14 @@ namespace POP.Framework
 
         public virtual void TransitionIn(UnityAction<BaseMenu> onComplete = null)
         {
-            TemporaryVariableManager.SetTemporaryVariable<UnityAction<BaseMenu>>(this, _onTransitionInCBIndex, onComplete);
+            TemporaryVariableManager.SetTemporaryVariable<UnityAction<BaseMenu>>(this, _onTransitionInCBIndex, onComplete,true);
             _baseMenuFSM.SetState(BaseMenuStates.TransitionIn);
         }
 
 
         public virtual void TransitionOut(UnityAction<BaseMenu> onComplete = null)
         {
-            TemporaryVariableManager.SetTemporaryVariable<UnityAction<BaseMenu>>(this, _onTransitionOutCBIndex, onComplete);
+            TemporaryVariableManager.SetTemporaryVariable<UnityAction<BaseMenu>>(this, _onTransitionOutCBIndex, onComplete, true);
             _baseMenuFSM.SetState(BaseMenuStates.TransitionOut);
         }
 

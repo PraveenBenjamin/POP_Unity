@@ -132,7 +132,9 @@ namespace POP.Modules
             float timer = TemporaryVariableManager.GetTemporaryVariable<float>(Instance, _commonTimerIndex);
             timer += Time.deltaTime;
 
-            ChangeAlpha(timer / _timePerTransition);
+            ChangeAlpha( 1 -(timer / _timePerTransition));
+
+            TemporaryVariableManager.SetTemporaryVariable<float>(Instance, _commonTimerIndex, timer);
 
             if (timer > _timePerTransition)
             {
@@ -140,6 +142,7 @@ namespace POP.Modules
                 if (splashScreenIndex < _splashScreens.Length - 1)
                 {
                     ++splashScreenIndex;
+                    SetSplashScreen(splashScreenIndex);
                     TemporaryVariableManager.SetTemporaryVariable<int>(Instance, _currSplashIndex, splashScreenIndex);
                     _ssFSM.SetState(SplashScreenStates.TransitionIn);
                 }
@@ -149,6 +152,8 @@ namespace POP.Modules
                     AppManager.Instance.EndCurrentState();
                 }
             }
+
+
         }
 
         private void TerminateTransitionOut()

@@ -16,44 +16,47 @@ namespace POP.Modules.Gameplay
     
     public class GameConfigurationContainer : SingletonBehaviour<GameConfigurationContainer>
     {
-        [SerializeField]
-        private DifficultyLevelImageDict _drawAreaDictionary;
+        [System.Serializable]
+        public class DifficultyLevelConfiguration
+        {
+            public Image DrawArea;
+            public int GridSize;
+            public int GameTime;
+        }
 
         [SerializeField]
-        private DifficultyLevelIntDict _gridSizeDictionary;
+        DifficultyLevelConfigurationDict _diffConfigDictionary;
+
 
         public static DifficultyLevel Difficulty = DifficultyLevel.Easy;
 
-    
         public const float GameCountdownDuration = 4;
 
-        [SerializeField]
-        private DifficultyLevelIntDict _gameTimerDictionary;
 
 
         public Image GetDrawArea(DifficultyLevel level)
         {
-            return _drawAreaDictionary[level];
+            return _diffConfigDictionary[level].DrawArea;
         }
 
         public int GetGridSize(DifficultyLevel level)
         {
-            return _gridSizeDictionary[level];
+            return _diffConfigDictionary[level].GridSize;
         }
 
         public int GetMaxGameTime(DifficultyLevel level)
         {
-            return _gameTimerDictionary[level];
+            return _diffConfigDictionary[level].GameTime;
         }
 
         protected override void InitializeSingleton()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         protected override void OnDestroySingleton()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
     }
 }

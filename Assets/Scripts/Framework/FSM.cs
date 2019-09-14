@@ -52,31 +52,31 @@ namespace POP.Framework
                 for (int i = 0; i < allMethods.Length; ++i)
                 {
                     curr = allMethods[i];
-                    methodNameToConsider = _baseEnumValue.ToString();
-                    methodNameToConsider.Insert(0, initPrefix);
+                    methodNameToConsider = initPrefix + _baseEnumValue.ToString();
+                    //methodNameToConsider.Insert(0, initPrefix);
                     if (curr.Name.Equals(methodNameToConsider))
                     {
-                        _initCallback = (UnityAction)curr.CreateDelegate(typeof(T), toInitializeWith);
+                        _initCallback = (UnityAction)curr.CreateDelegate(typeof(UnityAction), toInitializeWith);
                     }
 
-                    methodNameToConsider.Remove(0, initPrefix.Length);
-                    methodNameToConsider.Insert(0, updatePrefix);
+                    methodNameToConsider = updatePrefix + _baseEnumValue.ToString();
+                    //methodNameToConsider.Insert(0, updatePrefix);
                     if (curr.Name.Equals(methodNameToConsider))
                     {
-                        _updateCallback = (UnityAction)curr.CreateDelegate(typeof(T), toInitializeWith);
+                        _updateCallback = (UnityAction)curr.CreateDelegate(typeof(UnityAction), toInitializeWith);
                     }
 
-                    methodNameToConsider.Remove(0, updatePrefix.Length);
-                    methodNameToConsider.Insert(0, terminatePrefix);
+                    methodNameToConsider = terminatePrefix + _baseEnumValue.ToString();
+                    //methodNameToConsider.Insert(0, terminatePrefix);
                     if (curr.Name.Equals(methodNameToConsider))
                     {
-                        _terminateCallback = (UnityAction)curr.CreateDelegate(typeof(T), toInitializeWith);
+                        _terminateCallback = (UnityAction)curr.CreateDelegate(typeof(UnityAction), toInitializeWith);
                     }
                 }
 
                 if (_initCallback == null && _updateCallback == null && _terminateCallback == null)
                 {
-                    Debug.LogWarning("empty state detected, was this intended?");
+                    Debug.Log("empty state detected, was this intended?" + _baseEnumValue);
                 }
             }
 
@@ -117,7 +117,7 @@ namespace POP.Framework
         public bool Initialize(UnityEngine.Object instanceToInitializeFor)
         {
 
-            if (instanceToInitializeFor = null)
+            if (instanceToInitializeFor == null)
             {
                 Debug.LogError("instance is Null, why you do dis?");
                 return false;
@@ -132,13 +132,13 @@ namespace POP.Framework
 
             try
             {
-                T[] enumValsCache = (T[])System.Enum.GetValues(typeof(T));
+                _enumValsCache = (T[])System.Enum.GetValues(typeof(T));
 
-                _states = new State[enumValsCache.Length];
-                for (int i = 0; i < enumValsCache.Length; ++i)
+                _states = new State[_enumValsCache.Length];
+                for (int i = 0; i < _enumValsCache.Length; ++i)
                 {
                     State toCreate = new State();
-                    toCreate.Initialize((T)enumValsCache.GetValue(i), instanceToInitializeFor, Constants.FSMInitPrefix, Constants.FSMUpdatePrefix, Constants.FSMTerminatePrefix);
+                    toCreate.Initialize((T)_enumValsCache.GetValue(i), instanceToInitializeFor, Constants.FSMInitPrefix, Constants.FSMUpdatePrefix, Constants.FSMTerminatePrefix);
                     _states[i] = toCreate;
                 }
 
@@ -161,6 +161,13 @@ namespace POP.Framework
 
             if (_nextStatesIndices[0].Equals(toSet))
                 return;
+
+            if (_nextStatesIndices[0].Equals(null))
+            { 
+                _nextStatesIndices[0] = toSet;
+                return;
+            }
+            
 
             _nextStatesIndices[1] = toSet;
            

@@ -32,7 +32,7 @@ public class CameraTransitioner : SingletonBehaviour<CameraTransitioner>
 
     private float _transitionTime;
     private float _timer = 0;
-    private UnityAction onComplete = null;
+    private UnityAction _onComplete = null;
 
     public void TransitionTo(CameraPositions position, UnityAction onComplete = null, BaseTransitioner.LerpType lerpType = BaseTransitioner.LerpType.Cubic,float transitionTime = 2)
     {
@@ -47,10 +47,11 @@ public class CameraTransitioner : SingletonBehaviour<CameraTransitioner>
         _targetPosition = position;
         _lerpType = lerpType;
         _transitionTime = transitionTime;
+        _onComplete = onComplete;
     }
 
 
-    public void UpdateCamera()
+    public void Update()
     {
         if (_timer >= _transitionTime)
             return;
@@ -66,7 +67,7 @@ public class CameraTransitioner : SingletonBehaviour<CameraTransitioner>
         switch (_lerpType)
         {
             case BaseTransitioner.LerpType.Cubic:
-                val = Mathfx.Clerp(0, 1, _timer / _transitionTime);
+                val = Mathfx.Hermite(0, 1, _timer / _transitionTime);
             break;
             case BaseTransitioner.LerpType.Sin:
                 val = Mathfx.Sinerp(0, 1, _timer / _transitionTime);
@@ -78,6 +79,11 @@ public class CameraTransitioner : SingletonBehaviour<CameraTransitioner>
 
         pos = Vector3.Lerp(_transitionStartPos, _targetPosition, val);
         transform.position = pos;
+
+        if (_timer == _transitionTime)
+        {
+            _onComplete?.Invoke();
+        }
     }
 
 

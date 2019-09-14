@@ -14,6 +14,14 @@ namespace POP.Framework
         [SerializeField]
         private Canvas _UIRoot;
 
+        public Canvas UIRoot
+        {
+            get
+            {
+                return _UIRoot;
+            }
+        }
+
         // ideally i would have done the generation and configuration of modules at runtime, and initialize them through a config file, 
         // but i definitely have a deadline to adhere to, and i dont have the time
         [SerializeField]
@@ -51,7 +59,8 @@ namespace POP.Framework
 
         private void InitSplashScreen()
         {
-           Instantiate(_splashScreenPrefab);
+           SplashScreenManager ssm = Instantiate(_splashScreenPrefab);
+            ssm.transform.SetParent(_UIRoot.transform,false);
         }
 
         private void UpdateSplashScreen()
@@ -68,7 +77,8 @@ namespace POP.Framework
 
         private void InitMainRoutine()
         {
-            Instantiate(_gameManagerPrefab);
+            GameManager go = Instantiate(_gameManagerPrefab);
+            go.transform.SetParent(transform, false);
         }
 
         private void UpdateMainRoutine()
