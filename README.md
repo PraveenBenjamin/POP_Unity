@@ -51,7 +51,7 @@ time, but as it stands, given the timeframe, I believe i did what was asked of m
 Finally i realize that my code doesnt have too much documentation. But that is truly because of how simple it is to follow.
 I made sure I documented the parts that i felt were less intuitive.
 
-The game is designed for the 16:9 aspect ratio. It will support others, but it wont look as good as it should.
+The game is designed for the 16:9 aspect ratio. It will support others, but it wont look as good as it should. The game was tested on the LG G7Thinq, OnePlus 6T and a MotoG. 
 
 I will add GameplayFootage to the repository, along with an apk file target towards Oreo, but with min target Lollipop
 
