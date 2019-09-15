@@ -1,6 +1,9 @@
 # POP_Unity
 POP! The plight of our peeps, UKEN challenge submission
 
+Please read this file to completion before launching the game (or atleast until before the Commentary section). It describes 
+elements critical to understanding the game's concept.
+
 DISCLAIMER :- THIS GAME DOES NOT REFLECT MY THOUGHTS OR OPINIONS. IT IS CREATED IN JEST AND THAT IS ITS ONLY INTENTION.
 IT IS ONLY MEANT TO SHOWCASE MY EXPERIENCE WITH PROGRAMMING AND UNITY.
 
@@ -11,23 +14,26 @@ Fonts :- dafont.com
 
 Concept :-
 
-POP! the plight of our peeps, is a game about animal politics. the leaders of 5 parties are competing in an election, but who will win?
-That is where the player comes in. It is your task to bring together the peeps of different sides to reach a consensus.
+POP! the plight of our peeps, is a game about animal politics. the leaders of 5 parties are competing in an election, 
+but who will win? That is where the player comes in. It is your task to bring together the peeps of different sides to 
+reach a consensus.
 
 The game is a variant of the simple formula employed by traditional match 2 games.
-The goal of the game is to match as many of the animals as one can by clicking them in sequence, but matches are only possible
-if the animals are close together (including diagonals). If a match is not made, the clicked animals swap places.
-So the gameplay consists of swapping the animals to the right positions before matching them. But be careful! one mistake and 
-you wont be able to clear the grid!
+The goal of the game is to match as many of the animals as one can by clicking them in sequence, but matches are only 
+possible if the animals are close together (including diagonals). If a match is not made, the clicked animals swap places.
+So the gameplay consists of swapping the animals to the right positions before matching them. But be careful! one mistake 
+and  you wont be able to clear the grid!
 
 But as is true with everything else, life moves on... and the animals will stand for election again!
 
-The concept of the game is to show that, as with everything else, there is no clear choice. If you clear the grid, all the parties
-will have an equal number of votes, and nobody wins. But if you ensure that your party wins, you are stacking the deck
-against everyone else, and you are willfully preventing yourself from scoring... but isnt that true with actual politics?
+The concept of the game is to show that, as with everything else, there is no clear choice. If you clear the grid, all 
+the parties will have an equal number of votes, and nobody wins. But if you ensure that your party wins, you are stacking 
+the deck against everyone else, and you are willfully preventing yourself from scoring... but isnt that true with actual 
+politics?
 
 And who is to say that your chosen candidate adheres to what is morally right? who will to turn to for clarity? the media? 
-The media is obviously "influenced" by the competing parties right? Should you take what is told to you (in billboards i might add :P) at face value?
+The media is obviously "influenced" by the competing parties right? Should you take what is told to you (in billboards i 
+might add :P) at face value?
 
 So what will you do? who will you be voting for? who will you let win? and is that truly the right candidate?
 
@@ -43,7 +49,15 @@ I would like to state that I could have added many more things to the project to
 time, but as it stands, given the timeframe, I believe i did what was asked of me to specification, if not more.
 
 Finally i realize that my code doesnt have too much documentation. But that is truly because of how simple it is to follow.
-I made sure I documented the parts i felt were slightly less intuitive.
+I made sure I documented the parts that i felt were less intuitive.
+
+The game is designed for the 16:9 aspect ratio. It will support others, but it wont look as good as it should.
+
+I will add GameplayFootage to the repository, along with an apk file target towards Oreo, but with min target Lollipop
+
+Finally i thank you for your consideration of my canditure and for your time spent reviewing my submission.
+
+I wish you a wonderful day.
 
 
 ColorPallete :-
