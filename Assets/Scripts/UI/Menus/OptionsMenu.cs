@@ -18,7 +18,10 @@ namespace POP.UI.Menus
 
         public void OnBackButton()
         {
-            MenuManager.Instance.PopMenu();
+            MenuManager.Instance.PopMenu(()=>
+            {
+                MenuManager.Instance.PushMenu<MainMenu>();
+            });
         }
 
         protected override void ConstructionRoutineInternal()

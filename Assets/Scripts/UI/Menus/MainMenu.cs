@@ -96,7 +96,11 @@ namespace POP.UI.Menus
                     });
                     break;
                 case MainMenuButtonType.Options:
+                    MenuManager.Instance.PopMenu(() =>
+                    {
                         MenuManager.Instance.PushMenu<OptionsMenu>();
+                    });
+                        
                     break;
                 case MainMenuButtonType.Achievements:
                     break;

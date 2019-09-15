@@ -29,6 +29,7 @@ namespace POP.Framework
             {
                 _audioSourceHandle.clip = _audioClips[type];
                 _audioSourceHandle.Play();
+                _audioSourceHandle.loop = true;
             }
         }
 

@@ -560,13 +560,13 @@ MonoBehaviour:
     _keys: 000000000100000002000000
     _values:
     - DrawArea: {fileID: 2104153493}
-      GridSize: 8
+      GridSize: 4
       GameTime: 20
     - DrawArea: {fileID: 1963516361}
-      GridSize: 10
+      GridSize: 6
       GameTime: 20
     - DrawArea: {fileID: 2141598817}
-      GridSize: 12
+      GridSize: 8
       GameTime: 20
   _colorCodes:
     reorderableList:
@@ -2419,7 +2419,7 @@ MonoBehaviour:
   - {x: 84.92, y: 40.26, z: -35.51}
   - {x: 76.92, y: 4, z: 40}
   - {x: 34.4, y: 8, z: 35}
-  - {x: -4.2, y: 28, z: 30.4}
+  - {x: -4.2, y: 27.5, z: 30.4}
   - {x: -9.27, y: 32.1, z: 4.86}
   _possibleCameraOrientations:
   - {x: 0, y: 0, z: 0}

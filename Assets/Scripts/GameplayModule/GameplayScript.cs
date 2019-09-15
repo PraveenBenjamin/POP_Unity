@@ -66,7 +66,7 @@ namespace POP.Modules.Gameplay
                 if (pp != _currentlySelectedPeep)
                 {
                     float dist = Vector2.Distance(_currentlySelectedPeep.ArrayPos, pp.ArrayPos);
-                    if (_currentlySelectedPeep.Type == pp.Type && dist < _gridInterval * 1.1f)
+                    if (_currentlySelectedPeep.Type == pp.Type && dist < _gridInterval * 0.5f)
                     {
                         OnMatch(_currentlySelectedPeep, pp);
                     }
@@ -93,6 +93,10 @@ namespace POP.Modules.Gameplay
                 GameDataContainer.MatchCountByType.Add(pp1.Type, 0);
 
             GameDataContainer.MatchCountByType[pp1.Type] += 1;
+
+            if(GameDataContainer.AllMatchesMade())
+                _gpFSM.SetState(GameStates.Complete);
+
         }
 
 
@@ -151,7 +155,7 @@ namespace POP.Modules.Gameplay
         private void InitializePeeps(List<PopPeep> allPeeps)
         {
             int count = allPeeps.Count;
-            int availableTypes = System.Enum.GetNames(typeof(PopPeep.PopPeepTypes)).Length - 1;
+            int availableTypes = System.Enum.GetNames(typeof(PopPeep.PopPeepTypes)).Length;
             for (int i = count; i > 0; i -= 2)
             {
                 int randColorIndex = UnityEngine.Random.Range(0, availableTypes);

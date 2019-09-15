@@ -15,6 +15,16 @@ public static class GameDataContainer
         return (float)((float)MatchCountByType[type]/ PossibleMatchesByType[type]);
     }
 
+    public static bool AllMatchesMade()
+    {
+        foreach (var pair in MatchCountByType)
+        {
+            if (pair.Value != PossibleMatchesByType[pair.Key])
+                return false;
+        }
+        return true;
+    }
+
     public static void Refresh()
     {
         MatchCountByType.Clear();

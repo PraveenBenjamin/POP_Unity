@@ -73,32 +73,18 @@ namespace POP.UI.Menus
             BillboardScript.Instance.EnableBillboard(false);
             //set all sliders to 0
 
-            List<PopPeep.PopPeepTypes> winners = new List<PopPeep.PopPeepTypes>();
-            float max = -1;
+            
             foreach (KeyValuePair<PopPeep.PopPeepTypes, Slider> pair in _ppSliderDic)
             {
-                if (pair.Value.value >= max)
-                {
-                    if (pair.Value.value > max)
-                        winners.Clear();
-
-                    max = pair.Value.value;
-                    winners.Add(pair.Key);
-                }
+               
                 pair.Value.value = 0;
 
                 //i know i know its terrible :( no time :3
                 pair.Value.transform.Find("Fill Area/Fill").GetComponent<Image>().color = GameConfigurationContainer.Instance.GetColorCode(pair.Key);
             }
 
-            if (winners.Count == 1)
-                RandomizeResultText(winners[0]);
-            else
-            {
-                _headingText.text = "Victor left undecided!";
-                _messageText.text = "Candidates say they will definitely run in the re-election!";
-
-            }
+            _headingText.text = "";
+            _messageText.text = "";
 
         }
 
@@ -131,6 +117,30 @@ namespace POP.UI.Menus
         private void TerminateAnimatingResults()
         {
             TemporaryVariableManager.SetTemporaryVariable<float>(this, _commonTimerIndex, 0, true);
+
+            List<PopPeep.PopPeepTypes> winners = new List<PopPeep.PopPeepTypes>();
+            float max = -1;
+
+            foreach (KeyValuePair<PopPeep.PopPeepTypes, Slider> pair in _ppSliderDic)
+            {
+                if (pair.Value.value >= max)
+                {
+                    if (pair.Value.value > max)
+                        winners.Clear();
+
+                    max = pair.Value.value;
+                    winners.Add(pair.Key);
+                }
+            }
+
+            if (winners.Count == 1)
+                RandomizeResultText(winners[0]);
+            else
+            {
+                _headingText.text = "Victor left undecided!";
+                _messageText.text = "Candidates say they will definitely run in the re-election!";
+
+            }
         }
 
 
