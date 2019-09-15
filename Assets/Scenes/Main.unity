@@ -230,7 +230,7 @@ MonoBehaviour:
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1600, y: 900}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -696,7 +696,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 10.75, y: 10.299999}
+  m_AnchoredPosition: {x: 10.75, y: 9.23}
   m_SizeDelta: {x: -29.93, y: -20.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &119446263
@@ -721,8 +721,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ac40ad17a453abb49bded5acd3258e95, type: 2}
-  m_sharedMaterial: {fileID: 21136312614953966, guid: ac40ad17a453abb49bded5acd3258e95,
+  m_fontAsset: {fileID: 11400000, guid: 468c0d077819ba9449cf7d422eec8270, type: 2}
+  m_sharedMaterial: {fileID: 21708017446892624, guid: 468c0d077819ba9449cf7d422eec8270,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -748,8 +748,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 4.5
-  m_fontSizeBase: 4.5
+  m_fontSize: 2.5
+  m_fontSizeBase: 2.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -961,10 +961,16 @@ MonoBehaviour:
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
     isExpanded: 1
-    _keyValues: 00000000
-    _keys: 00000000
+    _keyValues: 05000000000000000100000002000000030000000400000006000000
+    _keys: 05000000000000000100000002000000030000000400000006000000
     _values:
     - {fileID: 8300000, guid: f7b9d97d621ce9b43bd5082f687aa0a1, type: 3}
+    - {fileID: 8300000, guid: 1a94e6e919de72f42a4cb84a33ea4672, type: 3}
+    - {fileID: 8300000, guid: 6a563f96c5266054799a4832e77d38c1, type: 3}
+    - {fileID: 8300000, guid: 0580fd2909144a147bcb9af552108130, type: 3}
+    - {fileID: 8300000, guid: 8c4e1f28183e2634cbfb95f0b656a5e9, type: 3}
+    - {fileID: 8300000, guid: 60e5eff0f536a9f4287501c2f04d8923, type: 3}
+    - {fileID: 8300000, guid: c3742fc116957f54ab1db771ff065e0a, type: 3}
 --- !u!82 &149945528
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1509,12 +1515,12 @@ Transform:
   m_Children:
   - {fileID: 268219876}
   - {fileID: 1572023273}
+  - {fileID: 1816534803}
+  - {fileID: 1228023527}
   - {fileID: 687907491}
   - {fileID: 659938377}
   - {fileID: 1795023868}
   - {fileID: 1091249312}
-  - {fileID: 1816534803}
-  - {fileID: 1228023527}
   - {fileID: 732831401}
   - {fileID: 1884270448}
   m_Father: {fileID: 0}
@@ -7730,7 +7736,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 446718, guid: cb01cd0aac62e274f94acadee440857c, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 446718, guid: cb01cd0aac62e274f94acadee440857c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7876,7 +7882,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 477618, guid: 145e2b12a1c29f74b9d3e9f009a6b849, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 477618, guid: 145e2b12a1c29f74b9d3e9f009a6b849, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8231,8 +8237,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ac40ad17a453abb49bded5acd3258e95, type: 2}
-  m_sharedMaterial: {fileID: 21136312614953966, guid: ac40ad17a453abb49bded5acd3258e95,
+  m_fontAsset: {fileID: 11400000, guid: 468c0d077819ba9449cf7d422eec8270, type: 2}
+  m_sharedMaterial: {fileID: 21708017446892624, guid: 468c0d077819ba9449cf7d422eec8270,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -8258,8 +8264,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 3.5
-  m_fontSizeBase: 3.5
+  m_fontSize: 2
+  m_fontSizeBase: 2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -9577,7 +9583,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 477326, guid: cfd708e971fd3a04980832ce33c26963, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 477326, guid: cfd708e971fd3a04980832ce33c26963, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10057,7 +10063,7 @@ Transform:
   - {fileID: 546913800}
   - {fileID: 1683357806}
   m_Father: {fileID: 238401985}
-  m_RootOrder: 7
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1233067916
 GameObject:
@@ -11677,14 +11683,14 @@ MonoBehaviour:
     _flavor: Who needs a doctorate when you have a bear!
     _flavorCol: {r: 0.514151, g: 1, b: 0.514151, a: 0}
   - _image: {fileID: 21300000, guid: 6e5fc3edaaf529d4e9492bf5ae99752b, type: 3}
-    _title: KumKongKun the Konquerer!
+    _title: Un Kong Jim the Konquerer!
     _type: 2
     _flavor: All I want for Christmaaas is Nuuukes!
     _flavorCol: {r: 0.5990566, g: 0.65865636, b: 1, a: 0}
   - _image: {fileID: 21300000, guid: 035fe03c41426be449c28ad4599a02ec, type: 3}
     _title: Mobi shtick!
     _type: 3
-    _flavor: Be it tea stalls or a nation, I can run em all!
+    _flavor: Be it a corner store or a nation, I can run em all!
     _flavorCol: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 0}
   - _image: {fileID: 21300000, guid: f3883d68e0a596447bed822f709b7eaa, type: 3}
     _title: Billary for President!
@@ -13091,7 +13097,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 495612, guid: 987fda4a7b6255c4d84da6cd799a9b15, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 495612, guid: 987fda4a7b6255c4d84da6cd799a9b15, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -13252,7 +13258,7 @@ Transform:
   - {fileID: 197670126}
   - {fileID: 2133928869}
   m_Father: {fileID: 238401985}
-  m_RootOrder: 6
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1820813348
 PrefabInstance:

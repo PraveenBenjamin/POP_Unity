@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Randomizes transforms of children of objects referred through the editor
+/// used to randomize the trees in the main game scene
+/// </summary>
 public class RandomizeTransform : MonoBehaviour
 {
 

@@ -8,8 +8,12 @@ using POP.Modules.Gameplay;
 namespace POP.Modules
 {
 
+    /// <summary>
+    /// Welp what can i tell you? fades in and fades out images, then transfers control :D simple yet effective :D
+    /// </summary>
     // ideally i would have written an animator script from scratch, but i just dont have the time given my deadline.
-    // hard-coded animation it is.
+    // hard-coded splashscreen animation it is.
+
     [RequireComponent(typeof(Image))]
     public class SplashScreenManager : SingletonBehaviour<SplashScreenManager>
     {

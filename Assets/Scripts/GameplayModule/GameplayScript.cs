@@ -5,9 +5,15 @@ using POP.Framework;
 using UnityEngine.UI;
 using POP.UI.Menus;
 using System;
+using UnityEngine.Events;
 
 namespace POP.Modules.Gameplay
 {
+
+    /// <summary>
+    /// The game play script
+    /// Handles the entirety of the gameplay logic. Pretty straightforward really.
+    /// </summary>
     public class GameplayScript : SingletonBehaviour<GameplayScript>
     {
 
@@ -59,6 +65,11 @@ namespace POP.Modules.Gameplay
             if (_gpFSM.GetState() != GameStates.Gameplay)
                 return;
 
+            if (pp == null)
+            {
+                _currentlySelectedPeep = null;
+                return;
+            }
             if (_currentlySelectedPeep == null)
                 _currentlySelectedPeep = pp;
             else
@@ -82,8 +93,26 @@ namespace POP.Modules.Gameplay
         private void OnMatch(PopPeep pp1, PopPeep pp2)
         {
             //MATCH!
-            ActorManager.Instance.DestroyActor(pp1);
-            ActorManager.Instance.DestroyActor(pp2);
+            pp1.Enable(false);
+            pp2.Enable(false);
+
+            pp1.SetState(PopPeep.PopPeepStates.Matched);
+            pp2.SetState(PopPeep.PopPeepStates.Matched);
+
+            Vector3 midPoint = Vector3.Lerp(pp2.transform.position,pp1.transform.position,0.5f);
+
+            StartCoroutine(MovePopPeeps(pp1, pp2, midPoint, midPoint, () =>
+            {
+                AudioManager.Instance.PlayOneShot((AudioManager.AudioClipType)pp1.Type);
+                ActorManager.Instance.DestroyActor(pp1);
+                ActorManager.Instance.DestroyActor(pp2);
+
+            }, Constants.globalAnimationSpeed * 0.5f));
+
+           
+
+
+
             int score = TemporaryVariableManager.GetTemporaryVariable<int>(this, _scoreIndex);
             score += 10;
             MenuManager.Instance.PeekMenu<InGameMenu>().ScoreText = score.ToString();
@@ -100,19 +129,19 @@ namespace POP.Modules.Gameplay
         }
 
 
-        private IEnumerator SwapPopPeeps(PopPeep pp1, PopPeep pp2,float transitionTime = 2,BaseTransitioner.LerpType lType = BaseTransitioner.LerpType.Cubic)
+        private IEnumerator MovePopPeeps(PopPeep pp1, PopPeep pp2,Vector3 pos1, Vector3 pos2,UnityAction onComplete = null,float transitionTime = 2,BaseTransitioner.LerpType lType = BaseTransitioner.LerpType.Cubic)
         {
             float timer = 0;
 
             if (pp1 == null || pp2 == null)
                 yield return 0;
 
-            Vector3 startPos = pp1.transform.position;
-            Vector3 endPos = pp2.transform.position;
+            Vector3 startPos1 = pp1.transform.position;
+            Vector3 startPos2 = pp2.transform.position;
+            Vector3 endPos1 = pos1;
+            Vector3 endPos2 = pos2;
             float nVal = 0;
 
-            pp1.Enable(false);
-            pp2.Enable(false);
 
             while (timer < transitionTime)
             {
@@ -125,18 +154,14 @@ namespace POP.Modules.Gameplay
                         nVal = Mathfx.Hermite(0, 1, nVal);
                     break;
                 }
-                pp1.transform.position = Vector3.Lerp(startPos, endPos, nVal);
-                pp2.transform.position = Vector3.Lerp(startPos, endPos, 1- nVal);
+                pp1.transform.position = Vector3.Lerp(startPos1, endPos1, nVal);
+                pp2.transform.position = Vector3.Lerp(startPos2, endPos2, nVal);
 
                 yield return null;
             }
 
-            Vector2 arrayPos = pp1.ArrayPos;
-            pp1.SetArrayPos(pp2.ArrayPos);
-            pp2.SetArrayPos(arrayPos);
 
-            pp1.Enable(true);
-            pp2.Enable(true);
+            onComplete?.Invoke();
 
             yield return 0;
         }
@@ -147,7 +172,21 @@ namespace POP.Modules.Gameplay
             //SWAP!
             //i normally dont use coroutines, but i guess it would help to show that i do know how
             // and i dont really have too much time left....
-            StartCoroutine(SwapPopPeeps(pp1, pp2,Constants.globalAnimationSpeed));
+            pp1.Enable(false);
+            pp2.Enable(false);
+            StartCoroutine(MovePopPeeps(pp1, pp2,pp2.transform.position,pp1.transform.position,()=>
+            {
+                Vector2 arrayPos = pp1.ArrayPos;
+                pp1.SetArrayPos(pp2.ArrayPos);
+                pp2.SetArrayPos(arrayPos);
+
+                pp1.Enable(true);
+                pp2.Enable(true);
+
+                pp1.SetState(PopPeep.PopPeepStates.Idle);
+                pp2.SetState(PopPeep.PopPeepStates.Idle);
+
+            },Constants.globalAnimationSpeed*0.5f));
 
         }
 
@@ -250,7 +289,7 @@ namespace POP.Modules.Gameplay
 
             TemporaryVariableManager.SetTemporaryVariable<float>(this, _commonTimerIndex, 0, true);
 
-            MenuManager.Instance.PeekMenu<InGameMenu>().TimerText = "0";
+            MenuManager.Instance.PeekMenu<InGameMenu>().TimerText = GameConfigurationContainer.Instance.GetMaxGameTime(GameConfigurationContainer.Difficulty).ToString();
             MenuManager.Instance.PeekMenu<InGameMenu>().ScoreText = "0";
 
             TemporaryVariableManager.SetTemporaryVariable<float>(this, _gameTimerIndex, (float)(GameConfigurationContainer.Instance.GetMaxGameTime(GameConfigurationContainer.Difficulty)), true);
@@ -319,12 +358,6 @@ namespace POP.Modules.Gameplay
             TemporaryVariableManager.SetTemporaryVariable<float>(this, _commonTimerIndex, 0, true);
         }
 
-
-        private void InitGameplay()
-        {
-            // do i need this?
-        }
-
         private void UpdateGameplay()
         {
             float timeAvailable = TemporaryVariableManager.GetTemporaryVariable<float>(this, _gameTimerIndex);
@@ -345,18 +378,6 @@ namespace POP.Modules.Gameplay
                 _gpFSM.SetState(GameStates.Complete);
             }
 
-        }
-
-        private void TerminateGameplay()
-        {
-            // do i need this?
-            
-        }
-
-
-        private void InitComplete()
-        {
-           
         }
 
         private void UpdateComplete()

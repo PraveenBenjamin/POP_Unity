@@ -4,10 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using POP.Modules;
 using UnityEngine.Events;
+using POP.Modules.Gameplay;
 
 namespace POP.Framework
 {
-    //Overaching app state management
+    /// <summary>
+    /// Manages the app. Entry point of the application
+    /// creates other behaviours and transfers control as required
+    /// </summary>
     public class AppManager : SingletonBehaviour<AppManager>
     {
 
@@ -48,9 +52,23 @@ namespace POP.Framework
             _appManagerFSM = new FSM<AppStates>();
             _appManagerFSM.Initialize(Instance);
 
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
+            //Set UI Size
+            Resolution cr = Screen.currentResolution;
 
-            //create universal singletons
-            
+            if (cr.height < GameConfigurationContainer.ReferenceResolutionHeight)
+            {
+
+                Vector2Int resToBe = new Vector2Int(cr.width, cr.height);
+                //Vector2Int resToBe = new Vector2Int(GameConfigurationContainer.DebugTestResolutionWidth, GameConfigurationContainer.DebugTestResolutionHeight);
+                resToBe.x = (int)((float)resToBe.y * GameConfigurationContainer.SupportedAspectRatio);
+
+                Screen.SetResolution(resToBe.x, resToBe.y, true);
+
+                _UIRoot.GetComponent<CanvasScaler>().scaleFactor = resToBe.y / (float)GameConfigurationContainer.ReferenceResolutionHeight;
+            }
+#endif
+
         }
 
         private void InitInitialization()
@@ -93,7 +111,10 @@ namespace POP.Framework
             Destroy(GameManager.Instance.gameObject);
         }
 
-
+        /// <summary>
+        /// Terminates the current state and Increments the appmanager'ss state
+        /// (this was initially intended to allow for external state changes, but that feature was later removed)
+        /// </summary>
         public void EndCurrentState()
         {
             Debug.Log("EndCurrentState called during " + _appManagerFSM.GetState());
@@ -102,6 +123,7 @@ namespace POP.Framework
             // but given the size of the program, we can safely just increment the state and be done.
             _appManagerFSM.SetState((AppStates)(_appManagerFSM.GetState() + 1));
         }
+
 
         protected override void UpdateSingleton()
         {

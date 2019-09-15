@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// VROOM!
+/// lerps between the children of the circuit parent at the speed specified. 
+/// Hacked in some animation to make it look pretty :D
+/// </summary>
 public class SimpleCarScript : MonoBehaviour
 {
     [SerializeField]

@@ -4,9 +4,13 @@ using UnityEngine;
 using POP.Framework;
 using POP.Modules.Gameplay;
 using UnityEngine.UI;
+using POP.Misc;
 
 namespace POP.UI.Menus
 {
+    /// <summary>
+    /// implementation of the LevelSelectMenu
+    /// </summary>
     public class LevelSelectMenu : BaseMenu
     {
 
@@ -33,7 +37,7 @@ namespace POP.UI.Menus
             _leftButton.interactable = requiredDifficulty != 0;
             _rightButton.interactable = requiredDifficulty != maxDiffLevel;
 
-            CameraTransitioner.Instance.TransitionTo((CameraTransitioner.CameraPositions)(requiredDifficulty + 2), null, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
+            CameraBehaviour.Instance.TransitionTo((CameraBehaviour.CameraPositions)(requiredDifficulty + 2), null, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
 
             GameConfigurationContainer.Difficulty = (DifficultyLevel) requiredDifficulty;
         }
@@ -42,42 +46,12 @@ namespace POP.UI.Menus
         {
             MenuManager.Instance.PopMenu(() =>
             {
-                CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.MainMenu, () =>
+                CameraBehaviour.Instance.TransitionTo(CameraBehaviour.CameraPositions.MainMenu, () =>
                  {
                      MenuManager.Instance.PushMenu<MainMenu>();
                  }, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
             });
         }
 
-
-        protected override void ConstructionRoutineInternal()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void DestructionRoutineInternal()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void InitMain()
-        {
-            OnDifficultyChanged(0);
-        }
-
-        protected override void InputDependantUpdateRoutine()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void TerminateMain()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void UpdateMain()
-        {
-            //throw new System.NotImplementedException();
-        }
     }
 }

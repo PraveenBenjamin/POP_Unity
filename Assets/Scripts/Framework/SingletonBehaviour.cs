@@ -3,43 +3,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SingletonBehaviour<T> : MonoBehaviour where T: class
+
+namespace POP.Framework
 {
-    private static T _instance;
-    public static T Instance
+
+    /// <summary>
+    /// Singleton behaviour abstract class.
+    /// Extend to create singletons within the application
+    /// entry point for singleton updation
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class SingletonBehaviour<T> : MonoBehaviour where T : class
     {
-        get
+        private static T _instance;
+        public static T Instance
         {
-            return _instance;
-        } 
-    }
-
-
-    protected abstract void InitializeSingleton();
-    protected abstract void OnDestroySingleton();
-
-    protected virtual void UpdateSingleton() { }
-
-    private void Awake()
-    {
-        if (_instance != null)
-        {
-            Debug.LogWarning("Attempting to create a second instance of a SingletonBehaviour. This is not allowed. Destroying component"+this.GetType().ToString());
-            DestroyImmediate(this);
-            return;
+            get
+            {
+                return _instance;
+            }
         }
-        _instance = (T)System.Convert.ChangeType(this,typeof(T));
-        InitializeSingleton();
-    }
 
-    private void Update()
-    {
-        UpdateSingleton();
-    }
 
-    private void OnDestroy()
-    {
-        _instance = null;
-        OnDestroySingleton();
+        protected virtual void InitializeSingleton() { }
+        protected virtual void OnDestroySingleton() { }
+        protected virtual void UpdateSingleton() { }
+
+        private void Awake()
+        {
+            if (_instance != null)
+            {
+                Debug.LogWarning("Attempting to create a second instance of a SingletonBehaviour. This is not allowed. Destroying component" + this.GetType().ToString());
+                DestroyImmediate(this);
+                return;
+            }
+            _instance = (T)System.Convert.ChangeType(this, typeof(T));
+            InitializeSingleton();
+        }
+
+        protected void Update()
+        {
+            UpdateSingleton();
+        }
+
+        private void OnDestroy()
+        {
+            _instance = null;
+            OnDestroySingleton();
+        }
     }
 }

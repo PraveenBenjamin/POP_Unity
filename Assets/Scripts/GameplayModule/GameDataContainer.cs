@@ -4,6 +4,10 @@ using UnityEngine;
 using POP.Framework;
 using POP.Modules.Gameplay;
 
+
+/// <summary>
+/// Central repository for any variables that need to be shared between classes
+/// </summary>
 public static class GameDataContainer
 {
     public static PopPeepTypeIntDict MatchCountByType = new PopPeepTypeIntDict();

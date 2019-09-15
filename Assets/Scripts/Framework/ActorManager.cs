@@ -5,8 +5,13 @@ using System;
 using UnityEngine.Events;
 using System.Linq;
 
+//part of the POP.Framework namespace because this class is part of the architechture of the game. Irreplacable essentially
 namespace POP.Framework
 {
+
+    /// <summary>
+    /// Creates, Manages and Destroys all actors within the game
+    /// </summary>
     public class ActorManager : SingletonBehaviour<ActorManager>
     {
 
@@ -20,6 +25,12 @@ namespace POP.Framework
             toDestroy = new List<BaseActor>();
         }
 
+        /// <summary>
+        /// Creates an actor of type specified as generic parameter
+        /// </summary>
+        /// <typeparam name="T"> type of actor to create (will poll the PrefabDatabase with a stringified version of this to retrieve actore)</typeparam>
+        /// <param name="uid"> uid to assign to the actor for both internal management and easy retrieval </param>
+        /// <returns>instance of actor or null</returns>
         public T CreateActor<T>(string uid) where T:BaseActor
         {
             Type toConsider = typeof(T);
@@ -33,11 +44,13 @@ namespace POP.Framework
                 return null;
             }
 
-            T newActor = PrefabDatabase.Instance.GetPrefabInstance(typeof(T).ToString()).GetComponent<T>();
-            newActor.gameObject.name = uid;
-            newActor.Initialize();
-            dicToUse.Add(uid, newActor);
-
+            T newActor = PrefabDatabase.Instance.GetPrefabInstance(typeof(T).ToString())?.GetComponent<T>();
+            if (newActor != null)
+            {
+                newActor.gameObject.name = uid;
+                newActor.Initialize();
+                dicToUse.Add(uid, newActor);
+            }
             return newActor;
         }
 
@@ -50,6 +63,12 @@ namespace POP.Framework
             return null;
         }
 
+        /// <summary>
+        /// Attempts to find and return the actor specified by uid
+        /// </summary>
+        /// <typeparam name="T"> type of actor </typeparam>
+        /// <param name="uid"> uid of actor</param>
+        /// <returns>either actor reference or null</returns>
         public BaseActor GetActor<T>(string uid)
         {
             Dictionary<string, BaseActor> dic = GetActorDictionary(typeof(T));
@@ -59,6 +78,12 @@ namespace POP.Framework
             return null;
         }
 
+
+        /// <summary>
+        /// Gets the number of actors of type T that exist in the application
+        /// </summary>
+        /// <typeparam name="T">type of actor</typeparam>
+        /// <returns>positive integer or -1</returns>
         public int GetActorCount<T>()
         {
             Dictionary<string, BaseActor> dic = GetActorDictionary(typeof(T));
@@ -69,6 +94,10 @@ namespace POP.Framework
         }
 
 
+        /// <summary>
+        /// Destroys the actor specified. Calls BaseActor.DestructionRoutine internally.
+        /// </summary>
+        /// <param name="toRelease"> actor to destroy </param>
         public void DestroyActor(BaseActor toRelease)
         {
 
@@ -80,9 +109,18 @@ namespace POP.Framework
                 toDestroy.Add(dic[toRelease.ActorUID]);
                 _isDirty = true;
             }
+            else
+            {
+                Destroy(toRelease.gameObject);
+            }
             toRelease.DestructionRoutine();
         }
 
+
+        /// <summary>
+        /// Destroys all actors of type specified. Calls BaseActor.DestructionRoutine internally.
+        /// </summary>
+        /// <typeparam name="T"> type of actor </typeparam>
         public void DestroyAllActorOfType<T>()
         {
 
@@ -100,6 +138,9 @@ namespace POP.Framework
             }
         }
 
+        /// <summary>
+        /// maintains the internal actor dictionaries. Use with caution, performance intensive
+        /// </summary>
         private void PerformMaintainence()
         {
             for (int i = 0; i < toDestroy.Count; ++i)

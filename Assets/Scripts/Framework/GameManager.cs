@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using POP.UI.Menus;
 using POP.Modules.Gameplay;
+using POP.Misc;
 
 namespace POP.Framework
 {
+
+    /// <summary>
+    /// Manages the game.
+    /// creates other behaviours and transfers control as required
+    /// </summary>
     public class GameManager : SingletonBehaviour<GameManager>
     {
 
@@ -50,12 +56,16 @@ namespace POP.Framework
 
         private void InitPregame()
         {
-            CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.MainMenu, () =>
+            CameraBehaviour.Instance.TransitionTo(CameraBehaviour.CameraPositions.MainMenu, () =>
              {
                  MenuManager.Instance.PushMenu<MainMenu>();
              }, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
         }
 
+        /// <summary>
+        /// sets game state
+        /// </summary>
+        /// <param name="toSet"></param>
         public void SetGameState(GameStates toSet)
         {
             _gmFSM.SetState(toSet);
@@ -82,7 +92,7 @@ namespace POP.Framework
             DestroyImmediate(GameplayScript.Instance.gameObject);
             MenuManager.Instance.PopMenu(() =>
             {
-                CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.GameOver, () =>
+                CameraBehaviour.Instance.TransitionTo(CameraBehaviour.CameraPositions.GameOver, () =>
                  {
                      MenuManager.Instance.PushMenu<GameOverMenu>();
                  }, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
@@ -91,7 +101,9 @@ namespace POP.Framework
             
         }
 
-
+        /// <summary>
+        /// updates the gamemanager
+        /// </summary>
         public void UpdateGameManager()
         {
 
@@ -102,11 +114,6 @@ namespace POP.Framework
             _gmFSM.UpdateStateMachine();
             
         }
-
-
-        protected override void OnDestroySingleton()
-        {
-
-        }
+        
     }
 }

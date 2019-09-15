@@ -5,9 +5,14 @@ using POP.Framework;
 using UnityEngine.UI;
 using TMPro;
 using POP.Modules.Gameplay;
+using POP.Misc;
 
 namespace POP.UI.Menus
 {
+
+    /// <summary>
+    /// implementation of the MainMenu
+    /// </summary>
     public class MainMenu : BaseMenu
     {
 
@@ -40,42 +45,6 @@ namespace POP.UI.Menus
 
        
 
-        protected override void ConstructionRoutineInternal()
-        {
-            //perform sanity checks here
-        }
-
-        protected override void DestructionRoutineInternal()
-        {
-            //release resources here
-            // the main menu must only be destroyed on application exit
-        }
-
-        protected override void InputDependantUpdateRoutine()
-        {
-            // do i even need this?
-        }
-
-        protected override void InputIndependantUpdateRoutine()
-        {
-            //animate the billboard and the sky and everything to do with the environment here
-        }
-
-        protected override void InitMain()
-        {
-            //CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.MainMenu,null, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);
-        }
-
-        protected override void TerminateMain()
-        {
-
-        }
-
-        protected override void UpdateMain()
-        {
-
-        }
-
         public void OnMainMenuButtonClicked(int mainMenuButtonType)
         {
             MainMenuButtonType type = (MainMenuButtonType)mainMenuButtonType;
@@ -84,12 +53,12 @@ namespace POP.UI.Menus
                 case MainMenuButtonType.NewGame:
                     MenuManager.Instance.PopMenu(() =>
                     {
-                        CameraTransitioner.CameraPositions posToBe = CameraTransitioner.CameraPositions.LevelSelectEasy;
+                        CameraBehaviour.CameraPositions posToBe = CameraBehaviour.CameraPositions.LevelSelectEasy;
 
                         //hack, but eh its not a truly terrible one is it?
-                        posToBe = (CameraTransitioner.CameraPositions)(((int)(GameConfigurationContainer.Difficulty)) + 2);
+                        posToBe = (CameraBehaviour.CameraPositions)(((int)(GameConfigurationContainer.Difficulty)) + 2);
 
-                        CameraTransitioner.Instance.TransitionTo(posToBe, () =>
+                        CameraBehaviour.Instance.TransitionTo(posToBe, () =>
                          {
                              MenuManager.Instance.PushMenu<LevelSelectMenu>();
                          }, BaseTransitioner.LerpType.Cubic, Constants.globalAnimationSpeed);

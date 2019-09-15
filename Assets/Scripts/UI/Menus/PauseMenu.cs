@@ -7,7 +7,9 @@ using UnityEngine;
 
 namespace POP.UI.Menus
 {
-
+    /// <summary>
+    /// implementation of the PauseMenu
+    /// </summary>
     public class PauseMenu : BaseMenu
     {
 
@@ -29,34 +31,5 @@ namespace POP.UI.Menus
           //TODO
         }
 
-        protected override void ConstructionRoutineInternal()
-        {
-           
-        }
-
-        protected override void DestructionRoutineInternal()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void InitMain()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void InputDependantUpdateRoutine()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void TerminateMain()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void UpdateMain()
-        {
-            //throw new System.NotImplementedException();
-        }
     }
 }

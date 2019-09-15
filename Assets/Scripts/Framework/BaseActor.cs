@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace POP.Framework
 {
+    /// <summary>
+    /// Root of all actors that will be generated in the game
+    /// </summary>
     public abstract class BaseActor : MonoBehaviour
     {
 
@@ -12,6 +15,9 @@ namespace POP.Framework
         //for now imma just gonna pretend like this is readonly and not change it after setting it
         private string _actorUID;
 
+        /// <summary>
+        /// uid of actore
+        /// </summary>
         public string ActorUID
         {
             get
@@ -21,6 +27,9 @@ namespace POP.Framework
         }
 
 
+        /// <summary>
+        /// initializes the actor by calling BaseActor.CreationRoutine internally
+        /// </summary>
         public void Initialize()
         {
             _actorUID = this.gameObject.name;

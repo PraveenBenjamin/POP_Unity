@@ -10,6 +10,9 @@ using POP.Misc;
 namespace POP.UI.Menus
 {
 
+    /// <summary>
+    /// implementation of the GameOverMenu
+    /// </summary>
     //i would have added the option to restart the game from here, but im afraid il run out of time, so im gonna let him go through the main menu again
     public class GameOverMenu : BaseMenu
     {
@@ -49,7 +52,7 @@ namespace POP.UI.Menus
         {
             MenuManager.Instance.PopMenu(() =>
             {
-                CameraTransitioner.Instance.TransitionTo(CameraTransitioner.CameraPositions.MainMenu, () =>
+                CameraBehaviour.Instance.TransitionTo(CameraBehaviour.CameraPositions.MainMenu, () =>
                 {
                     GameManager.Instance.SetGameState(GameManager.GameStates.Pregame);
                     
@@ -141,6 +144,8 @@ namespace POP.UI.Menus
                 _messageText.text = "Candidates say they will definitely run in the re-election!";
 
             }
+
+            AudioManager.Instance.PlayOneShot(AudioManager.AudioClipType.OnResultsShown);
         }
 
 
@@ -154,6 +159,10 @@ namespace POP.UI.Menus
            
         }
 
+        protected override void UpdateMain()
+        {
+            _goFSM.UpdateStateMachine();
+        }
 
         protected override void ConstructionRoutineInternal()
         {
@@ -164,27 +173,6 @@ namespace POP.UI.Menus
         protected override void DestructionRoutineInternal()
         {
             _goFSM = null;
-        }
-
-        protected override void InitMain()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void InputDependantUpdateRoutine()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void TerminateMain()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void UpdateMain()
-        {
-            _goFSM.UpdateStateMachine();
-            //throw new System.NotImplementedException();
         }
 
     }

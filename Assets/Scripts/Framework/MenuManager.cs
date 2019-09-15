@@ -6,6 +6,9 @@ using UnityEngine.Events;
 
 namespace POP.Framework
 {
+    /// <summary>
+    /// Manages the menu stack of the game by pushing and popping game menus as instructed through its exposed functions
+    /// </summary>
     public class MenuManager : SingletonBehaviour<MenuManager>
     {
         private Stack<BaseMenu> _menuStack;
@@ -17,6 +20,11 @@ namespace POP.Framework
             return men;
         }
 
+        /// <summary>
+        /// pushes a basemenu to the stack
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="onComplete"></param>
         public void PushMenu<T>(UnityAction onComplete = null) where T : BaseMenu
         {
             BaseMenu men = InstantiateMenuInstance<T>();
@@ -27,16 +35,28 @@ namespace POP.Framework
             t.InitializeTransitions( Constants.globalAnimationSpeed);
 
             //hack
-            men.transform.parent.SetParent(AppManager.Instance.UIRoot.transform, false);
+            // Unity needs a canvas to draw UI elements on. 
+            // Every menu prefab is forced to have one, so it is reasonably safe to assume it will always be there
+            // still, a generic way to do this would be better
+            Transform canvas = men.transform.parent;
+            men.transform.SetParent(AppManager.Instance.UIRoot.transform, false);
+            if (canvas != null)
+                DestroyImmediate(canvas.gameObject);
+
             men.ConstructionRoutine();
             _menuStack.Push(men);
             men.TransitionIn((BaseMenu menu) =>
             {
-                OnMenuTransitionInComplete(menu);
+                //OnMenuTransitionInComplete(menu);
                 onComplete?.Invoke();
             }); 
         }
 
+
+        /// <summary>
+        /// pops the menu at the top of the stack
+        /// </summary>
+        /// <param name="onComplete"></param>
         public void PopMenu(UnityAction onComplete = null)
         {
             BaseMenu men = _menuStack.Peek();
@@ -45,24 +65,23 @@ namespace POP.Framework
                 OnMenuTransitionOutComplete(menu);
 
                 //HACK, notice the men.parent :/
-                Destroy(men.transform.parent.gameObject);
+                Destroy(men.transform.gameObject);
 
                 onComplete?.Invoke();
             });
 
         }
 
+        /// <summary>
+        /// returns a reference to the menu at the top of the stack
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T PeekMenu<T>() where T:BaseMenu
         {
             return (T)_menuStack.Peek();
         }
 
-
-        private void OnMenuTransitionInComplete(BaseMenu menuHandle)
-        {
-            // do i even need this?
-            
-        }
 
         private void OnMenuTransitionOutComplete(BaseMenu menuHandle)
         {
@@ -76,10 +95,6 @@ namespace POP.Framework
             _menuStack.Pop();
         }
 
-        private void OnMenuConstructionRoutineComplete(BaseMenu menHandle)
-        {
-
-        }
 
         protected override void InitializeSingleton()
         {
@@ -100,6 +115,9 @@ namespace POP.Framework
             }
         }
 
+        /// <summary>
+        /// updates the menu at the top of the stack
+        /// </summary>
         public void UpdateMenuManager()
         {
             if (_menuStack.Count > 0)

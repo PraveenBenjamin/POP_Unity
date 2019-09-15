@@ -8,11 +8,14 @@ using POP;
 
 namespace POP.Framework
 {
-
+    /// <summary>
+    /// Abstract Finite state machine
+    /// Calls methods through reflection based on the state and state of the state (init, update or terminate)
+    /// Prefixes to decipher methods to call via c# reflection exist in POP.Framework.Constants
+    /// </summary>
+    /// <typeparam name="T">enum to generate states with</typeparam>
     public class FSM<T> where T : struct, IConvertible
     {
-        
-
         public class State
         {
 
@@ -37,7 +40,16 @@ namespace POP.Framework
                 _terminateCallback = null;
             }
 
-            //todo :- see if we need to return a variable that tells us the available callbacks
+            /// <summary>
+            /// Initializes the state
+            /// Uses reflection to identify which methods to call within to the instance sent as parameter
+            /// Sets initial state
+            /// </summary>
+            /// <param name="enumValue"> enum to bind state to </param>
+            /// <param name="toInitializeWith"> object to bind state to </param>
+            /// <param name="initPrefix">prefix used to identify initCallback</param>
+            /// <param name="updatePrefix">prefix used to identify updateCallback</param>
+            /// <param name="terminatePrefix">prefix used to identify terminateCallback</param>
             public void Initialize(T enumValue, UnityEngine.Object toInitializeWith, string initPrefix, string updatePrefix, string terminatePrefix)
             {
                 _baseEnumValue = enumValue;
@@ -80,6 +92,10 @@ namespace POP.Framework
                 }
             }
 
+            /// <summary>
+            /// Invokes callbacks if present
+            /// </summary>
+            /// <param name="comp"> state of state (init, update or terminate)</param>
             public void Invoke(StateComponent comp)
             {
                 switch (comp)
@@ -114,6 +130,11 @@ namespace POP.Framework
         private State[] _states;
 
 
+        /// <summary>
+        /// Initializes the statemachine by generating states and hooking up the callbacks that exist in the parameter, identified through reflection
+        /// </summary>
+        /// <param name="instanceToInitializeFor">the object this state machine is intended for</param>
+        /// <returns></returns>
         public bool Initialize(UnityEngine.Object instanceToInitializeFor)
         {
 
@@ -154,6 +175,10 @@ namespace POP.Framework
             }
         }
 
+        /// <summary>
+        /// Updates fields that changes this machines state in the next update cycle
+        /// </summary>
+        /// <param name="toSet"></param>
         public void SetState(T toSet)
         {
             if (toSet.Equals(_currentStateIndex))
@@ -213,6 +238,9 @@ namespace POP.Framework
             return false;
         }
 
+        /// <summary>
+        /// updates the statemachine and invokes the appropriate callbacks based on the state
+        /// </summary>
         public void UpdateStateMachine()
         {
             if (_currentStateIndex == null)

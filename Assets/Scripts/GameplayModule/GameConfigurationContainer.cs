@@ -13,7 +13,9 @@ namespace POP.Modules.Gameplay
         Hard
     }
 
-    
+    /// <summary>
+    /// Central repository for game configuration values
+    /// </summary>
     public class GameConfigurationContainer : SingletonBehaviour<GameConfigurationContainer>
     {
         [System.Serializable]
@@ -37,11 +39,19 @@ namespace POP.Modules.Gameplay
 
         public const float SplashScreenTransitionTime = 1f;
 
-        public const float SplashScreenHangTime = 8f;
+        public const float SplashScreenHangTime = 10f;
 
         public const float BillboardTransitionTime = 2f;
 
         public const float BillboardHangTime = 5f;
+
+        public const float MaxSelectedTime = 3;
+
+        public const int ReferenceResolutionWidth = 1600;
+
+        public const int ReferenceResolutionHeight = 1000;
+
+        public const float SupportedAspectRatio = 1.78f;
 
 
         public Image GetDrawArea(DifficultyLevel level)
@@ -64,15 +74,5 @@ namespace POP.Modules.Gameplay
             return _colorCodes[type];
         }
 
-
-        protected override void InitializeSingleton()
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        protected override void OnDestroySingleton()
-        {
-            //throw new System.NotImplementedException();
-        }
     }
 }

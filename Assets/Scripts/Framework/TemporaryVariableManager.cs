@@ -7,6 +7,10 @@ using System.Linq;
 
 namespace POP.Framework
 {
+    /// <summary>
+    /// Creates and exposes temporary variables to any class that might need it.
+    /// Made to be a central system that allows for easy disposal of temporary variables, instead of having the clutter up other classes
+    /// </summary>
     public static class TemporaryVariableManager
     {
         public static Dictionary<UnityEngine.Object, Dictionary<int, object>> _temporaryVariables = new Dictionary<UnityEngine.Object, Dictionary<int, object>>();
@@ -29,6 +33,14 @@ namespace POP.Framework
             return dic;
         }
 
+
+        /// <summary>
+        /// Retrieves a previously stored temporary variable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instanceBoundTo"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public static T GetTemporaryVariable<T>(UnityEngine.Object instanceBoundTo, int index)
         {
             Dictionary<int, object> dic = GetDictionary(instanceBoundTo,index);
@@ -40,6 +52,16 @@ namespace POP.Framework
             
         }
 
+        /// <summary>
+        /// Sets a previously stored temporary variable
+        /// or force adds it if the parameter is specified
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instanceBoundTo"></param>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
+        /// <param name="forceAdd"></param>
+        /// <returns></returns>
         public static bool SetTemporaryVariable<T>(UnityEngine.Object instanceBoundTo, int index,T value,bool forceAdd = false)
         {
 
@@ -55,7 +77,9 @@ namespace POP.Framework
         }
 
 
-
+        /// <summary>
+        /// runs maintainence on internal dictionaries
+        /// </summary>
         private static void PerformMaintainence()
         {
 
