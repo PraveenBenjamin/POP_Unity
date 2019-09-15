@@ -242,7 +242,7 @@ namespace POP.Modules.Gameplay
             Vector3 placementPos =Vector3.one;
             placementPos.x = ((_drawArea.rectTransform.rect.width + widthInterval) / 2) * -1;
             placementPos.y = (_drawArea.rectTransform.rect.height - heightInterval) / 2;
-            placementPos.z = 0;
+            placementPos.z = 0f;
 
             List<PopPeep> allGeneratedPeeps = new List<PopPeep>();
 
