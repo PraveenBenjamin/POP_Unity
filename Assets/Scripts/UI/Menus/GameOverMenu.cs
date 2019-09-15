@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using POP.Misc;
 
 namespace POP.UI.Menus
 {
@@ -44,16 +44,21 @@ namespace POP.UI.Menus
                     GameManager.Instance.SetGameState(GameManager.GameStates.Pregame);
                     
                 },BaseTransitioner.LerpType.Cubic,Constants.globalAnimationSpeed);
+
+                BillboardScript.Instance.EnableBillboard(true);
             });
         }
 
         private void InitAnimatingResults()
         {
-
+            BillboardScript.Instance.EnableBillboard(false);
             //set all sliders to 0
             foreach (KeyValuePair<PopPeep.PopPeepTypes, Slider> pair in _ppSliderDic)
             {
                 pair.Value.value = 0;
+
+                //i know i know its terrible :( no time :3
+                pair.Value.transform.Find("Fill Area/Fill").GetComponent<Image>().color = GameConfigurationContainer.Instance.GetColorCode(pair.Key);
             }
 
 
@@ -97,6 +102,8 @@ namespace POP.UI.Menus
             {
                 pair.Value.value = 0;
             }
+
+           
         }
 
 

@@ -23,18 +23,18 @@ namespace POP.Modules
 
 
         [SerializeField]
-        private Sprite[] _splashScreens;
+        protected Sprite[] _splashScreens;
 
-        private float _timePerScreen;
-        private float _timePerTransition;
+        protected float _timePerScreen;
+        protected float _timePerTransition;
 
-        private FSM<SplashScreenStates> _ssFSM;
+        protected FSM<SplashScreenStates> _ssFSM;
 
-        private Image _imageHandle;
+        protected Image _imageHandle;
 
 
-        private int _commonTimerIndex = 0;
-        private int _currSplashIndex = 1;
+        protected int _commonTimerIndex = 0;
+        protected int _currSplashIndex = 1;
 
         protected override void InitializeSingleton()
         {
@@ -50,14 +50,14 @@ namespace POP.Modules
         }
 
 
-        private void SetSplashScreen(int index)
+        protected void SetSplashScreen(int index)
         {
             _imageHandle.sprite = _splashScreens[index];
         }
 
 
 
-        private void ChangeAlpha(float normalizedAlpha)
+        protected virtual void ChangeAlpha(float normalizedAlpha)
         {
             if (_imageHandle != null)
             {
@@ -128,7 +128,7 @@ namespace POP.Modules
             ChangeAlpha(1);
         }
 
-        private void UpdateTransitionOut()
+        protected virtual void UpdateTransitionOut()
         {
             float timer = TemporaryVariableManager.GetTemporaryVariable<float>(Instance, _commonTimerIndex);
             timer += Time.deltaTime;

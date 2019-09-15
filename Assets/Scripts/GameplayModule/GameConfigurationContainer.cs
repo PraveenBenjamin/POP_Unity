@@ -27,6 +27,9 @@ namespace POP.Modules.Gameplay
         [SerializeField]
         DifficultyLevelConfigurationDict _diffConfigDictionary;
 
+        [SerializeField]
+        PopPeepTypeColorDict _colorCodes;
+
 
         public static DifficultyLevel Difficulty = DifficultyLevel.Easy;
 
@@ -35,6 +38,10 @@ namespace POP.Modules.Gameplay
         public const float SplashScreenTransitionTime = 0.5f;
 
         public const float SplashScreenHangTime = 0.5f;
+
+        public const float BillboardTransitionTime = 2f;
+
+        public const float BillboardHangTime = 5f;
 
 
         public Image GetDrawArea(DifficultyLevel level)
@@ -51,6 +58,12 @@ namespace POP.Modules.Gameplay
         {
             return _diffConfigDictionary[level].GameTime;
         }
+
+        public Color GetColorCode(PopPeep.PopPeepTypes type)
+        {
+            return _colorCodes[type];
+        }
+
 
         protected override void InitializeSingleton()
         {

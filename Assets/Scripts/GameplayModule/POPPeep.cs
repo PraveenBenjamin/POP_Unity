@@ -35,6 +35,11 @@ namespace POP.Modules.Gameplay
         protected FSM<PopPeepStates> _ppFSM;
         protected PopPeepTypes _type;
         protected Vector2 _arrayPos;
+
+
+        [SerializeField]
+        PopPeepTypeGODict _prefabToInstantiate;
+
         public Vector2 ArrayPos
         {
             get
@@ -52,6 +57,7 @@ namespace POP.Modules.Gameplay
             }
         }
         private Button _buttonHandle;
+        private GameObject _bodyHandle;
 
         public override void CreationRoutine()
         {
@@ -86,11 +92,13 @@ namespace POP.Modules.Gameplay
 
         private void InitializeType()
         {
-            Color col = _buttonHandle.image.color;
-            switch (_type)
+            // Color col = _buttonHandle.image.color;
+
+            /*switch (_type)
             {
                 case PopPeepTypes.Red:
                     col = Color.red;
+                    
                     break;
                 case PopPeepTypes.Green:
                     col = Color.green;
@@ -104,9 +112,26 @@ namespace POP.Modules.Gameplay
                 case PopPeepTypes.White:
                     col = Color.white;
                     break;
-            }
+            }*/
 
-            _buttonHandle.image.color = col;
+            Color colToSet = GameConfigurationContainer.Instance.GetColorCode(_type);
+
+
+            _bodyHandle = GameObject.Instantiate(_prefabToInstantiate[_type]);
+
+            //HACK!
+            _bodyHandle.transform.SetParent(this.transform,false);
+            Vector3 dir = transform.position - CameraTransitioner.Instance.transform.position;
+            dir.Normalize();
+            _bodyHandle.transform.localPosition = -dir * 0.5f;
+            _bodyHandle.transform.forward = -dir;
+            //body.transform.localRotation = Quaternion.Euler(0, 140, 0);
+            _bodyHandle.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            _bodyHandle.GetComponentInChildren<MeshRenderer>().material.color = colToSet;
+
+            //end hack
+
+            //_buttonHandle.image.color = col;
         }
 
         public override void DestructionRoutine()
@@ -126,6 +151,9 @@ namespace POP.Modules.Gameplay
         {
             if(_ppFSM != null)
                 _ppFSM.UpdateStateMachine();
+
+            if (_bodyHandle != null)
+                _bodyHandle.transform.LookAt(CameraTransitioner.Instance.transform);
         }
 
     }

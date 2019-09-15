@@ -18,6 +18,9 @@ namespace POP.Framework
     public class PopPeepTypeColorDict : SerializableDictionaryBase<PopPeep.PopPeepTypes, Color> { }
 
     [System.Serializable]
+    public class PopPeepTypeGODict : SerializableDictionaryBase<PopPeep.PopPeepTypes, GameObject> { }
+
+    [System.Serializable]
     public class PopPeepTypeIntDict : SerializableDictionaryBase<PopPeep.PopPeepTypes, int> { }
 
     [System.Serializable]
@@ -37,5 +40,6 @@ namespace POP.Framework
 
     [System.Serializable]
     public class AudioClipTypeAudioClipDic : SerializableDictionaryBase<AudioManager.AudioClipType, AudioClip> { }
+
 
 }

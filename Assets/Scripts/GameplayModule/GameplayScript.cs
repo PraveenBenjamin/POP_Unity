@@ -66,7 +66,7 @@ namespace POP.Modules.Gameplay
                 if (pp != _currentlySelectedPeep)
                 {
                     float dist = Vector2.Distance(_currentlySelectedPeep.ArrayPos, pp.ArrayPos);
-                    if (_currentlySelectedPeep.Type == pp.Type && dist < _gridInterval * 1.5f)
+                    if (_currentlySelectedPeep.Type == pp.Type && dist < _gridInterval * 1.1f)
                     {
                         OnMatch(_currentlySelectedPeep, pp);
                     }
@@ -196,10 +196,10 @@ namespace POP.Modules.Gameplay
 
             _gridInterval = widthInterval;
 
-            Vector2 placementPos =Vector2.one;
+            Vector3 placementPos =Vector3.one;
             placementPos.x = ((_drawArea.rectTransform.rect.width + widthInterval) / 2) * -1;
             placementPos.y = (_drawArea.rectTransform.rect.height - heightInterval) / 2;
-
+            placementPos.z = 0;
 
             List<PopPeep> allGeneratedPeeps = new List<PopPeep>();
 
@@ -226,7 +226,7 @@ namespace POP.Modules.Gameplay
                     pp.transform.localPosition = placementPos;
 
                     //give it a little padding
-                    pp.transform.localScale = Vector2.one * (widthInterval * 0.8f);
+                    pp.transform.localScale = Vector3.one * (widthInterval * 0.8f);
 
                     pp.SetArrayPos(row, col);
 

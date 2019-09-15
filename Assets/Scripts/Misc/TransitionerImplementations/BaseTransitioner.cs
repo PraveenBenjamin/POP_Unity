@@ -153,10 +153,10 @@ public class BaseTransitioner : MonoBehaviour
 
     private void UpdateTransition(float nVal)
     {
-
+        float startNVal = nVal;
         for (int i = 0; i < _transitions.Count; ++i)
         {
-
+            nVal = startNVal;
             TransitionDatumInternal<Vector3> tdi = _transitions[i];
             // TODO:- debug and make this happen, otherwise hard code the required behaviour for the purposes of this challenge
 
