@@ -28,6 +28,11 @@ namespace POP.UI.Menus
             });
         }
 
+        protected override void InitMain()
+        {
+            OnDifficultyChanged(0);
+        }
+
         public void OnDifficultyChanged(int delta)
         {
             int currentDifficulty = (int)GameConfigurationContainer.Difficulty;
