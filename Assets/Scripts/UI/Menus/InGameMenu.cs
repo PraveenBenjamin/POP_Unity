@@ -15,11 +15,14 @@ namespace POP.UI.Menus
         {
             get
             {
-                return _timerText.text;
+                //the font i like doesnt have 0s :/
+                string toReturn = _timerText.text.Replace("O", "0");
+                return toReturn;
             }
             set
             {
-                _timerText.text = value;
+                string toSet = value.Replace("0", "O");
+                _timerText.text = toSet;
             }
         }
 
@@ -29,11 +32,14 @@ namespace POP.UI.Menus
         {
             get
             {
-                return _scoreText.text;
+                //the font i like doesnt have 0s :/
+                string toReturn = _scoreText.text.Replace("O", "0");
+                return toReturn;
             }
             set
             {
-                _scoreText.text = value;
+                string toSet = value.Replace("0", "O");
+                _scoreText.text = toSet;
             }
         }
 

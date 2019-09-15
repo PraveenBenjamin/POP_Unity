@@ -88,7 +88,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _splashScreens:
-  - {fileID: 21300000, guid: 2c55637a5f33ff64fbdab6e8a75f3cc0, type: 3}
-  - {fileID: 21300000, guid: 7ad3546d8d6c5fb438de706f6b086166, type: 3}
-  _timePerScreen: 0.25
-  _timePerTransition: 0.25
+  - {fileID: 21300000, guid: 921d40ba953436d4d91baf2f672a3ea8, type: 3}
+  - {fileID: 21300000, guid: a49b070088211114dbbd62eb3b147528, type: 3}

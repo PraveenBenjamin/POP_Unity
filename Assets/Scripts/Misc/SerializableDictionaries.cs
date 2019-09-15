@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using POP.Modules.Gameplay;
 using POP.Framework;
+using POP.UI.Menus;
 
 namespace POP.Framework
 {
@@ -19,6 +20,9 @@ namespace POP.Framework
 
     [System.Serializable]
     public class PopPeepTypeGODict : SerializableDictionaryBase<PopPeep.PopPeepTypes, GameObject> { }
+
+    [System.Serializable]
+    public class PopPeepTypeGameOverDatumDict : SerializableDictionaryBase<PopPeep.PopPeepTypes, GameOverMenu.GameOverTextDatum> { }
 
     [System.Serializable]
     public class PopPeepTypeIntDict : SerializableDictionaryBase<PopPeep.PopPeepTypes, int> { }

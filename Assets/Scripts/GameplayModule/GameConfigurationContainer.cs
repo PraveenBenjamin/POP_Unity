@@ -35,9 +35,9 @@ namespace POP.Modules.Gameplay
 
         public const float GameCountdownDuration = 4;
 
-        public const float SplashScreenTransitionTime = 0.5f;
+        public const float SplashScreenTransitionTime = 1f;
 
-        public const float SplashScreenHangTime = 0.5f;
+        public const float SplashScreenHangTime = 8f;
 
         public const float BillboardTransitionTime = 2f;
 

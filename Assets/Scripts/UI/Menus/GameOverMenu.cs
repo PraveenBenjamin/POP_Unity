@@ -29,10 +29,20 @@ namespace POP.UI.Menus
         private PopPeepTypeSliderDict _ppSliderDic;
 
         [SerializeField]
-        private TextMeshPro _titleText;
+        private TextMeshProUGUI _headingText;
 
         [SerializeField]
-        private TextMeshPro _messageText;
+        private TextMeshProUGUI _messageText;
+
+        [System.Serializable]
+        public class GameOverTextDatum
+        {
+            public string _headingText;
+            public string[] _messageOptions;
+        }
+
+        [SerializeField]
+        private PopPeepTypeGameOverDatumDict _gameOverTextOptions;
 
 
         public void OnBackToMainMenu()
@@ -49,18 +59,46 @@ namespace POP.UI.Menus
             });
         }
 
+
+
+        private void RandomizeResultText(PopPeep.PopPeepTypes winner)
+        {
+            GameOverTextDatum options = _gameOverTextOptions[winner];
+            _headingText.text = options._headingText;
+            _messageText.text = options._messageOptions[Random.Range(0,options._messageOptions.Length-1)];
+        }
+
         private void InitAnimatingResults()
         {
             BillboardScript.Instance.EnableBillboard(false);
             //set all sliders to 0
+
+            List<PopPeep.PopPeepTypes> winners = new List<PopPeep.PopPeepTypes>();
+            float max = -1;
             foreach (KeyValuePair<PopPeep.PopPeepTypes, Slider> pair in _ppSliderDic)
             {
+                if (pair.Value.value >= max)
+                {
+                    if (pair.Value.value > max)
+                        winners.Clear();
+
+                    max = pair.Value.value;
+                    winners.Add(pair.Key);
+                }
                 pair.Value.value = 0;
 
                 //i know i know its terrible :( no time :3
                 pair.Value.transform.Find("Fill Area/Fill").GetComponent<Image>().color = GameConfigurationContainer.Instance.GetColorCode(pair.Key);
             }
 
+            if (winners.Count == 1)
+                RandomizeResultText(winners[0]);
+            else
+            {
+                _headingText.text = "Victor left undecided!";
+                _messageText.text = "Candidates say they will definitely run in the re-election!";
+
+            }
 
         }
 

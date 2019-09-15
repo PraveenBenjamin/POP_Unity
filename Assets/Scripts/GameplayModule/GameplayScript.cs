@@ -328,7 +328,7 @@ namespace POP.Modules.Gameplay
             if (timeAvailable < 0)
                 timeAvailable = 0;
 
-            MenuManager.Instance.PeekMenu<InGameMenu>().TimerText = timeAvailable.ToString();
+            MenuManager.Instance.PeekMenu<InGameMenu>().TimerText = Mathf.Round((timeAvailable * 100.0f)/100.0f).ToString();
 
             TemporaryVariableManager.SetTemporaryVariable<float>(this, _gameTimerIndex, timeAvailable);
 
