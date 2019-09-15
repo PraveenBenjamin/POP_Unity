@@ -99,6 +99,7 @@ will begin writing gameplay next
 
 7:37) EOD, completed the basic architecture and overall flow of the game, tomorrow will be debugging the architecture and completing implementation sans UI
 
+
 14/9/2019 :- punched in at 7:24
 
 7:45) hard at work implementing and debugging yesterdays architecture
@@ -137,6 +138,7 @@ Then its off to deployment! woohoo!
 2:39) Game completed. Documentation and polish are the only things left :)
 
 3:25) fixing minor bugs till now. EOD.
+
 
 15-09-2019 :- punched in at 7:23
 
