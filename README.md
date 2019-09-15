@@ -156,3 +156,6 @@ Today is for bug fixing if any, deployment, cleanup and documentation
 3:09) Done. All that is left is to deploy one last time, test, and push
 
 4:10) homestretch. adding video and apk to repo. will check integrity of repo next.
+
+6:17) Completed my submission. That was a long 3 days, but it was also plenty of fun :D
+
